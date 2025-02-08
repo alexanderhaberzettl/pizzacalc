@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/pizzacalc/static/css/main.9d6c435f.css",
+    "main.js": "/pizzacalc/static/js/main.b441bd19.js",
+    "index.html": "/pizzacalc/index.html",
+    "main.9d6c435f.css.map": "/pizzacalc/static/css/main.9d6c435f.css.map",
+    "main.b441bd19.js.map": "/pizzacalc/static/js/main.b441bd19.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9d6c435f.css",
+    "static/js/main.b441bd19.js"
+  ]
+}
