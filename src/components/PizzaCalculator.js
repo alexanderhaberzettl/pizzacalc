@@ -19,7 +19,7 @@ function PizzaCalculator() {
     // Total dough = flour + water + salt + (oil) + yeast
     // We need to solve for flour first, then calculate the rest
     
-    const oilPercentage = useOil ? 0.04 : 0; // 4% if oil is used
+    const oilPercentage = useOil ? 0.02 : 0; // 2% if oil is used
     const waterPercentage = waterRatio / 100;
     const saltPercentage = 0.02; // 2%
     const yeastPercentage = 0.0008; // 0.08%
@@ -55,24 +55,34 @@ function PizzaCalculator() {
       
       <div className="input-section">
         <div className="input-group">
-          <label>Number of Pizzas:</label>
+          <label>Number of Pizzas: <span className="value-display">{pizzaCount}</span></label>
           <input
-            type="number"
+            type="range"
             min="1"
+            max="15"
             value={pizzaCount}
-            onChange={(e) => setPizzaCount(Math.max(1, parseInt(e.target.value) || 1))}
+            onChange={(e) => setPizzaCount(parseInt(e.target.value))}
           />
         </div>
 
-        <div className="input-group">
-          <label>Dough Ball Size:</label>
-          <select
-            value={doughBallSize}
-            onChange={(e) => setDoughBallSize(parseInt(e.target.value))}
-          >
-            <option value={333}>Regular (333g)</option>
-            <option value={275}>Thin Crust (275g)</option>
-          </select>
+        <div className="input-group dough-type-group">
+          <label>Dough Type:</label>
+          <div className="dough-type-buttons">
+            <button
+              className={`dough-type-button ${doughBallSize === 333 ? 'active' : ''}`}
+              onClick={() => setDoughBallSize(333)}
+            >
+              Regular
+              <span className="weight">333g</span>
+            </button>
+            <button
+              className={`dough-type-button ${doughBallSize === 275 ? 'active' : ''}`}
+              onClick={() => setDoughBallSize(275)}
+            >
+              Thin Crust
+              <span className="weight">275g</span>
+            </button>
+          </div>
         </div>
 
         <div className="input-group">
