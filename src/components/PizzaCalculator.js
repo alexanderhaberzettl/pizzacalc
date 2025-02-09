@@ -50,97 +50,94 @@ function PizzaCalculator() {
           </div>
         </div>
       )}
-    <div className="pizza-calculator">
-      <h1>Pizza Dough Calculator</h1>
-      
-      <div className="input-section">
-        <div className="input-group">
-          <label>Number of Pizzas: <span className="value-display">{pizzaCount}</span></label>
-          <input
-            type="range"
-            min="1"
-            max="15"
-            value={pizzaCount}
-            onChange={(e) => setPizzaCount(parseInt(e.target.value))}
-          />
-        </div>
-
-        <div className="input-group dough-type-group">
-          <label>Dough Type:</label>
-          <div className="dough-type-buttons">
-            <button
-              className={`dough-type-button ${doughBallSize === 333 ? 'active' : ''}`}
-              onClick={() => setDoughBallSize(333)}
-            >
-              Regular
-              <span className="weight">333g</span>
-            </button>
-            <button
-              className={`dough-type-button ${doughBallSize === 275 ? 'active' : ''}`}
-              onClick={() => setDoughBallSize(275)}
-            >
-              Thin Crust
-              <span className="weight">275g</span>
-            </button>
+      <div className="pizza-calculator">
+        <h1>Pizza Dough Calculator</h1>
+        
+        <div className="input-section">
+          <div className="input-group">
+            <label>Number of Pizzas: <span className="value-display">{pizzaCount}</span></label>
+            <input
+              type="range"
+              min="1"
+              max="15"
+              value={pizzaCount}
+              onChange={(e) => setPizzaCount(parseInt(e.target.value))}
+            />
           </div>
-        </div>
 
-        <div className="input-group">
-          <label>
-            Water to Flour Ratio:
-            <button className="info-icon" onClick={handleInfoClick}>ⓘ</button>
-          </label>
-          <input
-            type="range"
-            min="60"
-            max="70"
-            value={waterRatio}
-            onChange={(e) => setWaterRatio(parseInt(e.target.value))}
-          />
-          <span>{waterRatio}%</span>
-        </div>
-
-        <div className="input-group">
-          <label>Use Oil:</label>
-          <input
-            type="checkbox"
-            checked={useOil}
-            onChange={(e) => setUseOil(e.target.checked)}
-          />
-        </div>
-      </div>
-
-      <div className="recipe-section">
-        <h2>Recipe</h2>
-        <div className="ingredients-list">
-          <div className="ingredient">
-            <span>Flour:</span>
-            <span>{ingredients.flour}g</span>
-          </div>
-          <div className="ingredient">
-            <span>Water:</span>
-            <span>{ingredients.water}g</span>
-          </div>
-          <div className="ingredient">
-            <span>Salt:</span>
-            <span>{ingredients.salt}g</span>
-          </div>
-          {useOil && (
-            <div className="ingredient">
-              <span>Oil:</span>
-              <span>{ingredients.oil}g</span>
+          <div className="input-group dough-type-group">
+            <label>Dough Type:</label>
+            <div className="dough-type-buttons">
+              <button
+                className={`dough-type-button ${doughBallSize === 333 ? 'active' : ''}`}
+                onClick={() => setDoughBallSize(333)}
+              >
+                Regular
+                <span className="weight">333g</span>
+              </button>
+              <button
+                className={`dough-type-button ${doughBallSize === 275 ? 'active' : ''}`}
+                onClick={() => setDoughBallSize(275)}
+              >
+                Thin Crust
+                <span className="weight">275g</span>
+              </button>
             </div>
-          )}
-          <div className="ingredient">
-            <span>Yeast:</span>
-            <span>{ingredients.yeast}g</span>
+          </div>
+
+          <div className="input-group">
+            <label>
+              Water to Flour Ratio:
+              <button className="info-icon" onClick={handleInfoClick}>ⓘ</button>
+            </label>
+            <input
+              type="range"
+              min="60"
+              max="70"
+              value={waterRatio}
+              onChange={(e) => setWaterRatio(parseInt(e.target.value))}
+            />
+            <span>{waterRatio}%</span>
+          </div>
+
+          <div className="input-group">
+            <label>Use Oil:</label>
+            <input
+              type="checkbox"
+              checked={useOil}
+              onChange={(e) => setUseOil(e.target.checked)}
+            />
+          </div>
+        </div>
+
+        <div className="recipe-section">
+          <h2>Recipe</h2>
+          <div className="ingredients-list">
+            <div className="ingredient">
+              <span>Flour:</span>
+              <span>{ingredients.flour}g</span>
+            </div>
+            <div className="ingredient">
+              <span>Water:</span>
+              <span>{ingredients.water}g</span>
+            </div>
+            <div className="ingredient">
+              <span>Salt:</span>
+              <span>{ingredients.salt}g</span>
+            </div>
+            {useOil && (
+              <div className="ingredient">
+                <span>Oil:</span>
+                <span>{ingredients.oil}g</span>
+              </div>
+            )}
+            <div className="ingredient">
+              <span>Yeast:</span>
+              <span>{ingredients.yeast}g</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
     </>
   );
 }
