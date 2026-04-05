@@ -209,6 +209,10 @@ body {
   font-size: 15px;
   font-weight: 500;
   color: var(--accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
 }
 
 .preset-card-chevron {

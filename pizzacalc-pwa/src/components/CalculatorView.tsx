@@ -23,6 +23,7 @@ export default function CalculatorView() {
   const [copied, setCopied] = useState(false);
   const [perBallOpen, setPerBallOpen] = useState(false);
   const [bakersOpen, setBakersOpen] = useState(false);
+  const [appliedPreset, setAppliedPreset] = useState<PizzaPreset | null>(null);
 
   const calculate = () => {
     setResult(calculateDough({
@@ -47,8 +48,26 @@ export default function CalculatorView() {
     });
     setHydration(p.hydration);
     setYeastLabel(p.yeastLabel);
+    setAppliedPreset(p);
     setShowPresets(false);
   };
+
+  const isCustomized = appliedPreset !== null && (
+    hydration !== appliedPreset.hydration ||
+    yeastLabel !== appliedPreset.yeastLabel ||
+    settings.ballWeight !== appliedPreset.ballWeight ||
+    settings.saltRatio !== appliedPreset.saltPct ||
+    settings.includeOliveOil !== appliedPreset.includeOil ||
+    settings.oliveOilRatio !== appliedPreset.oilPct ||
+    settings.includeSugar !== appliedPreset.includeSugar ||
+    settings.sugarRatio !== appliedPreset.sugarPct
+  );
+
+  const presetLabel = appliedPreset === null
+    ? 'Choose a preset'
+    : isCustomized
+      ? `${appliedPreset.name} · customized`
+      : appliedPreset.name;
 
   const share = async () => {
     if (!result) return;
@@ -74,7 +93,7 @@ export default function CalculatorView() {
         <div className="preset-card-content">
           <div className="preset-card-text">
             <span className="preset-card-label">Style Preset</span>
-            <span className="preset-card-value">Choose a preset</span>
+            <span className="preset-card-value">{presetLabel}</span>
           </div>
           <span className="preset-card-chevron" aria-hidden="true" />
         </div>
