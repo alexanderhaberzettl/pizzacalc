@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSettings, yeastPctFor } from '../context/SettingsContext';
+import { useSettings, yeastPctFor, defaultSettings } from '../context/SettingsContext';
 import {
   calculateDough,
   formatGrams,
@@ -14,7 +14,7 @@ const HYDRATIONS = [0.60, 0.65, 0.70, 0.75];
 const YEAST_OPTIONS = ['Overnight', '9 hours', '3 hours'] as const;
 
 export default function CalculatorView() {
-  const { settings, updateSettings } = useSettings();
+  const { settings, updateSettings, resetToDefault } = useSettings();
   const [amountOfPizzas, setAmountOfPizzas] = useState(1);
   const [hydration, setHydration] = useState(0.65);
   const [yeastLabel, setYeastLabel] = useState<typeof YEAST_OPTIONS[number]>('Overnight');
@@ -23,6 +23,7 @@ export default function CalculatorView() {
   const [copied, setCopied] = useState(false);
   const [perBallOpen, setPerBallOpen] = useState(false);
   const [bakersOpen, setBakersOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [appliedPreset, setAppliedPreset] = useState<PizzaPreset | null>(null);
 
   const calculate = () => {
@@ -142,6 +143,69 @@ export default function CalculatorView() {
         <p className="hint">Lower hydration is easier to handle. Higher hydration gives a more open, Neapolitan-style crumb.</p>
       </section>
 
+      <Collapsible
+        title="Detailed Settings"
+        open={settingsOpen}
+        onToggle={() => setSettingsOpen(o => !o)}
+      >
+        <div className="settings-section">
+          <span className="settings-section-label">Dough Ball Weight</span>
+          <SliderRow label="Per ball" value={settings.ballWeight} min={150} max={750} step={5} suffix="g"
+            onChange={v => updateSettings({ ballWeight: v })} />
+        </div>
+
+        <div className="settings-section">
+          <span className="settings-section-label">Salt</span>
+          <SliderRow label="Salt" value={settings.saltRatio} min={1.0} max={3.5} step={0.1} suffix="% of flour" decimals={1}
+            onChange={v => updateSettings({ saltRatio: v })} />
+          <p className="hint" style={{ marginTop: 4 }}>Typical range: 2.0–2.8% for most styles.</p>
+        </div>
+
+        <div className="settings-section">
+          <span className="settings-section-label">Olive Oil</span>
+          <label className="toggle">
+            <input type="checkbox" checked={settings.includeOliveOil}
+              onChange={e => updateSettings({ includeOliveOil: e.target.checked })} />
+            <span>Include olive oil</span>
+          </label>
+          {settings.includeOliveOil && (
+            <SliderRow label="Oil" value={settings.oliveOilRatio} min={0.5} max={6.0} step={0.1} suffix="% of flour" decimals={1}
+              onChange={v => updateSettings({ oliveOilRatio: v })} />
+          )}
+        </div>
+
+        <div className="settings-section">
+          <span className="settings-section-label">Sugar / Malt</span>
+          <label className="toggle">
+            <input type="checkbox" checked={settings.includeSugar}
+              onChange={e => updateSettings({ includeSugar: e.target.checked })} />
+            <span>Include sugar</span>
+          </label>
+          {settings.includeSugar && (
+            <>
+              <SliderRow label="Sugar" value={settings.sugarRatio} min={0.5} max={5.0} step={0.1} suffix="% of flour" decimals={1}
+                onChange={v => updateSettings({ sugarRatio: v })} />
+              <p className="hint" style={{ marginTop: 4 }}>Common in NY-style doughs to aid browning.</p>
+            </>
+          )}
+        </div>
+
+        <div className="settings-section">
+          <span className="settings-section-label">Yeast — % of flour, instant dry</span>
+          <SliderRow label="Overnight" value={settings.yeastOvernight} min={0.03} max={0.30} step={0.01} suffix="%" decimals={3}
+            onChange={v => updateSettings({ yeastOvernight: v })} />
+          <SliderRow label="9 hours" value={settings.yeast9h} min={0.10} max={0.80} step={0.05} suffix="%" decimals={2}
+            onChange={v => updateSettings({ yeast9h: v })} />
+          <SliderRow label="3 hours" value={settings.yeast3h} min={0.50} max={2.50} step={0.10} suffix="%" decimals={2}
+            onChange={v => updateSettings({ yeast3h: v })} />
+          <p className="hint" style={{ marginTop: 4 }}>For fresh yeast, multiply values by ~3.</p>
+        </div>
+
+        <button className="calc-btn danger" onClick={resetToDefault} style={{ marginTop: 8 }}>
+          Reset to Defaults
+        </button>
+      </Collapsible>
+
       <button className="calc-btn" onClick={calculate}>Calculate</button>
 
       {result && (
@@ -211,6 +275,22 @@ function Row({ label, value, bold }: { label: string; value: string; bold?: bool
     <div className={bold ? 'row row-bold' : 'row'}>
       <span>{label}</span>
       <span>{value}</span>
+    </div>
+  );
+}
+
+function SliderRow({ label, value, min, max, step, suffix, decimals = 0, onChange }: {
+  label: string; value: number; min: number; max: number; step: number;
+  suffix: string; decimals?: number; onChange: (v: number) => void;
+}) {
+  return (
+    <div className="slider-row">
+      <div className="slider-label">
+        <span>{label}</span>
+        <span className="slider-value">{value.toFixed(decimals)} {suffix}</span>
+      </div>
+      <input type="range" min={min} max={max} step={step} value={value}
+        onChange={e => onChange(parseFloat(e.target.value))} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type Tab = 'calculator' | 'recipes' | 'settings';
+export type Tab = 'calculator' | 'recipes';
 
 interface Props {
   active: Tab;
@@ -54,7 +54,6 @@ function GearIcon() {
 const TABS: { id: Tab; label: string; Icon: React.FC }[] = [
   { id: 'calculator', label: 'Calculator', Icon: CalcIcon },
   { id: 'recipes', label: 'Recipe', Icon: BookIcon },
-  { id: 'settings', label: 'Settings', Icon: GearIcon },
 ];
 
 export default function Navigation({ active, onChange }: Props) {

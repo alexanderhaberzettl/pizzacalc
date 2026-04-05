@@ -458,6 +458,26 @@ input[type="range"] {
   }
 }
 
+/* Settings sub-sections inside collapsible */
+.settings-section {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-section:last-of-type {
+  border-bottom: none;
+}
+
+.settings-section-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
 /* ─── Collapsible sections ────────────────────────────── */
 .collapsible { padding: 0; }
 

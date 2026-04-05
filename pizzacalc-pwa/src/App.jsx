@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import CalculatorView from './components/CalculatorView';
 import RecipesView from './components/RecipesView';
-import SettingsView from './components/SettingsView';
 import SplashScreen from './components/SplashScreen';
 import Navigation from './components/Navigation';
 import { SettingsProvider } from './context/SettingsContext';
@@ -26,7 +25,6 @@ function App() {
         <main className="app-main">
           {tab === 'calculator' && <CalculatorView />}
           {tab === 'recipes' && <RecipesView />}
-          {tab === 'settings' && <SettingsView />}
         </main>
         <Navigation active={tab} onChange={setTab} />
       </div>
