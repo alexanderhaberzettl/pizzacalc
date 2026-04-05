@@ -60,6 +60,10 @@ const TABS: { id: Tab; label: string; Icon: React.FC }[] = [
 export default function Navigation({ active, onChange }: Props) {
   return (
     <nav className="bottom-nav">
+      <div className="nav-brand">
+        <img src="/pizzacalc/splashscreen.png" alt="" className="nav-brand-icon" />
+        <span className="nav-brand-name">Pizzacalc</span>
+      </div>
       {TABS.map(({ id, label, Icon }) => (
         <button
           key={id}

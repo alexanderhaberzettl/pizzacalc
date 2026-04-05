@@ -70,10 +70,14 @@ export default function CalculatorView() {
     <div className="view">
       <h1>Calculator</h1>
 
-      <section className="card">
-        <button className="preset-btn" onClick={() => setShowPresets(true)}>
-          Apply a style preset
-        </button>
+      <section className="card preset-card" onClick={() => setShowPresets(true)}>
+        <div className="preset-card-content">
+          <div className="preset-card-text">
+            <span className="preset-card-label">Style Preset</span>
+            <span className="preset-card-value">Choose a preset</span>
+          </div>
+          <span className="preset-card-chevron" aria-hidden="true" />
+        </div>
       </section>
 
       <section className="card">
@@ -167,7 +171,7 @@ export default function CalculatorView() {
         <div className="modal-backdrop" onClick={() => setShowPresets(false)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Style Presets</h2>
+              <h2>Choose a Preset</h2>
               <button onClick={() => setShowPresets(false)}>Close</button>
             </div>
             {PRESETS.map(p => (

@@ -7,6 +7,7 @@
   --accent-light: #f7e5cb;
   --border: #e5e0d8;
   --danger: #c0392b;
+  --nav-width: 220px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,11 +41,11 @@ body {
 
 .app-main {
   flex: 1;
-  padding-bottom: 72px; /* room for bottom nav */
+  padding-bottom: 72px;
 }
 
 .view {
-  max-width: 640px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 16px;
 }
@@ -55,7 +56,7 @@ body {
 }
 
 .view h2 {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   margin: 0 0 12px;
   color: var(--text-muted);
@@ -172,6 +173,54 @@ body {
   border: 1px solid var(--border);
 }
 
+/* Preset card */
+.preset-card {
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.preset-card:hover {
+  background: var(--accent-light);
+}
+
+.preset-card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.preset-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.preset-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.preset-card-value {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.preset-card-chevron {
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--text-muted);
+  border-top: 2px solid var(--text-muted);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* Legacy preset-btn (unused but keep for safety) */
 .preset-btn {
   width: 100%;
   padding: 12px;
@@ -262,7 +311,7 @@ input[type="range"] {
   line-height: 1.5;
 }
 
-/* Bottom nav */
+/* ─── Bottom nav (mobile) ─────────────────────────────── */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -273,6 +322,11 @@ input[type="range"] {
   border-top: 1px solid var(--border);
   display: flex;
   padding-bottom: env(safe-area-inset-bottom, 0);
+  z-index: 50;
+}
+
+.nav-brand {
+  display: none; /* hidden on mobile */
 }
 
 .nav-item {
@@ -299,7 +353,108 @@ input[type="range"] {
   height: 22px;
 }
 
-/* Collapsible sections */
+.nav-label {
+  font-size: 11px;
+}
+
+/* ─── Sidebar nav (desktop ≥ 768px) ──────────────────── */
+@media (min-width: 768px) {
+  .app {
+    flex-direction: row;
+  }
+
+  .app-main {
+    margin-left: var(--nav-width);
+    padding-bottom: 24px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .view {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  .view h1 {
+    font-size: 32px;
+    margin: 0 0 20px;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: auto;
+    width: var(--nav-width);
+    height: 100vh;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    border-top: none;
+    border-right: 1px solid var(--border);
+    padding: 0 0 24px;
+    gap: 2px;
+    overflow: hidden;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 16px 16px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-brand-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .nav-brand-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .nav-item {
+    flex: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 11px 16px;
+    margin: 0 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .nav-item.active {
+    background: var(--accent-light);
+  }
+
+  .nav-label {
+    font-size: 14px;
+  }
+
+  /* Center the preset modal on desktop */
+  .modal-backdrop {
+    align-items: center;
+  }
+
+  .modal {
+    max-width: 480px;
+    border-radius: 16px;
+    margin: 0 auto;
+  }
+}
+
+/* ─── Collapsible sections ────────────────────────────── */
 .collapsible { padding: 0; }
 
 .collapsible-header {
@@ -330,6 +485,7 @@ input[type="range"] {
   transform: rotate(45deg);
   transition: transform 0.2s ease;
   margin-bottom: 4px;
+  flex-shrink: 0;
 }
 
 .chevron.open {
@@ -338,7 +494,7 @@ input[type="range"] {
   margin-top: 4px;
 }
 
-/* Modal */
+/* ─── Modal ───────────────────────────────────────────── */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -393,6 +549,11 @@ input[type="range"] {
   cursor: pointer;
   font-family: inherit;
   color: var(--text);
+  transition: background 0.1s;
+}
+
+.preset-row:hover {
+  background: var(--accent-light);
 }
 
 .preset-name {
@@ -406,7 +567,7 @@ input[type="range"] {
   color: var(--text-muted);
 }
 
-/* Splash */
+/* ─── Splash ──────────────────────────────────────────── */
 .splash {
   position: fixed;
   inset: 0;
@@ -415,11 +576,18 @@ input[type="range"] {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 16px;
+}
+
+.splash-icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 22px;
 }
 
 .splash-title {
   font-size: 32px;
+  font-weight: 700;
   margin: 0;
   color: var(--text);
 }
