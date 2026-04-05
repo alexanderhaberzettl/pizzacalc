@@ -458,6 +458,28 @@ input[type="range"] {
   }
 }
 
+/* Or divider */
+.or-divider {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 4px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
 /* Settings sub-sections inside collapsible */
 .settings-section {
   padding: 12px 0;

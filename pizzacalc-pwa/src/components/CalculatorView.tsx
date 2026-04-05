@@ -100,6 +100,8 @@ export default function CalculatorView() {
         </div>
       </section>
 
+      <p className="or-divider">Or create your own recipe</p>
+
       <section className="card">
         <label className="card-label">Fermentation</label>
         <div className="segmented">
