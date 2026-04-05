@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { PRESETS, PizzaPreset, fermentationHint } from '../lib/dough';
+import { defaultSettings } from '../context/SettingsContext';
 
 const STEPS: string[] = [
   "Prepare the specified amount of water (30–35°C). Mix 3 tablespoons of it with the yeast in a small container and let it sit.",
@@ -14,16 +16,87 @@ const STEPS: string[] = [
   "Take a ball and shape your pizza with plenty of flour or semolina flour.",
 ];
 
+function StatPill({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="stat-pill">
+      <span className="stat-pill-label">{label}</span>
+      <span className="stat-pill-value">{value}</span>
+    </div>
+  );
+}
+
+function PresetCard({ preset }: { preset: PizzaPreset }) {
+  return (
+    <section className="card recipe-preset-card">
+      <div className="recipe-preset-header">
+        <div>
+          <div className="recipe-preset-name">{preset.name}</div>
+          <div className="recipe-preset-desc">{preset.description}</div>
+        </div>
+      </div>
+      <div className="stat-pills">
+        <StatPill label="Hydration" value={`${Math.round(preset.hydration * 100)}%`} />
+        <StatPill label="Ball weight" value={`${preset.ballWeight}g`} />
+        <StatPill label="Salt" value={`${preset.saltPct}%`} />
+        <StatPill label="Fermentation" value={preset.yeastLabel} />
+        {preset.includeOil && <StatPill label="Olive oil" value={`${preset.oilPct}%`} />}
+        {preset.includeSugar && <StatPill label="Sugar" value={`${preset.sugarPct}%`} />}
+      </div>
+      <p className="hint" style={{ marginTop: 8 }}>{fermentationHint(preset.yeastLabel)}</p>
+    </section>
+  );
+}
+
+function DefaultSettingsCard() {
+  const d = defaultSettings;
+  return (
+    <section className="card recipe-preset-card">
+      <div className="recipe-preset-header">
+        <div>
+          <div className="recipe-preset-name">Default Settings</div>
+          <div className="recipe-preset-desc">Baseline values used when no preset is applied</div>
+        </div>
+      </div>
+      <div className="stat-pills">
+        <StatPill label="Ball weight" value={`${d.ballWeight}g`} />
+        <StatPill label="Salt" value={`${d.saltRatio}%`} />
+        <StatPill label="Overnight yeast" value={`${d.yeastOvernight}%`} />
+        <StatPill label="9h yeast" value={`${d.yeast9h}%`} />
+        <StatPill label="3h yeast" value={`${d.yeast3h}%`} />
+        {d.includeOliveOil && <StatPill label="Olive oil" value={`${d.oliveOilRatio}%`} />}
+        {d.includeSugar && <StatPill label="Sugar" value={`${d.sugarRatio}%`} />}
+      </div>
+    </section>
+  );
+}
+
 export default function RecipesView() {
+  const [stepsOpen, setStepsOpen] = useState(false);
+
   return (
     <div className="view">
       <h1>Recipe</h1>
-      <section className="card">
-        <ol className="recipe-steps">
-          {STEPS.map((step, i) => (
-            <li key={i}>{step}</li>
-          ))}
-        </ol>
+
+      <h2 style={{ marginBottom: 12 }}>Style Presets</h2>
+      {PRESETS.map(p => <PresetCard key={p.name} preset={p} />)}
+      <DefaultSettingsCard />
+
+      <section className="card collapsible" style={{ marginTop: 8 }}>
+        <button
+          className="collapsible-header"
+          onClick={() => setStepsOpen(o => !o)}
+          aria-expanded={stepsOpen}
+        >
+          <h2 style={{ margin: 0 }}>How to make the dough</h2>
+          <span className={stepsOpen ? 'chevron open' : 'chevron'} aria-hidden="true" />
+        </button>
+        {stepsOpen && (
+          <div className="collapsible-body">
+            <ol className="recipe-steps">
+              {STEPS.map((step, i) => <li key={i}>{step}</li>)}
+            </ol>
+          </div>
+        )}
       </section>
     </div>
   );

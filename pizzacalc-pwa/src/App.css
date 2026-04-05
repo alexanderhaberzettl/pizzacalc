@@ -315,6 +315,58 @@ input[type="range"] {
   line-height: 1.5;
 }
 
+/* ─── Recipe preset cards ────────────────────────────── */
+.recipe-preset-card {
+  padding: 14px 16px;
+}
+
+.recipe-preset-header {
+  margin-bottom: 10px;
+}
+
+.recipe-preset-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.recipe-preset-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.stat-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.stat-pill {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  min-width: 64px;
+}
+
+.stat-pill-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+}
+
+.stat-pill-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 1px;
+}
+
 /* ─── Bottom nav (mobile) ─────────────────────────────── */
 .bottom-nav {
   position: fixed;
