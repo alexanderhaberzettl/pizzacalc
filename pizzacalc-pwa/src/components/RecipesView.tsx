@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PRESETS, PizzaPreset, fermentationHint } from '../lib/dough';
 import { defaultSettings } from '../context/SettingsContext';
 
@@ -71,33 +71,20 @@ function DefaultSettingsCard() {
 }
 
 export default function RecipesView() {
-  const [stepsOpen, setStepsOpen] = useState(false);
-
   return (
     <div className="view">
       <h1>Recipe</h1>
 
-      <h2 style={{ marginBottom: 12 }}>Style Presets</h2>
-      {PRESETS.map(p => <PresetCard key={p.name} preset={p} />)}
-      <DefaultSettingsCard />
-
-      <section className="card collapsible" style={{ marginTop: 8 }}>
-        <button
-          className="collapsible-header"
-          onClick={() => setStepsOpen(o => !o)}
-          aria-expanded={stepsOpen}
-        >
-          <h2 style={{ margin: 0 }}>How to make the dough</h2>
-          <span className={stepsOpen ? 'chevron open' : 'chevron'} aria-hidden="true" />
-        </button>
-        {stepsOpen && (
-          <div className="collapsible-body">
-            <ol className="recipe-steps">
-              {STEPS.map((step, i) => <li key={i}>{step}</li>)}
-            </ol>
-          </div>
-        )}
+      <h2 style={{ marginBottom: 12 }}>How to make the dough</h2>
+      <section className="card">
+        <ol className="recipe-steps">
+          {STEPS.map((step, i) => <li key={i}>{step}</li>)}
+        </ol>
       </section>
+
+      <h2 style={{ marginBottom: 12, marginTop: 20 }}>Presets &amp; Settings</h2>
+      <DefaultSettingsCard />
+      {PRESETS.map(p => <PresetCard key={p.name} preset={p} />)}
     </div>
   );
 }
