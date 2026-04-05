@@ -109,7 +109,7 @@ export function fermentationHint(label: string): string {
 
 export function buildShareText(r: DoughResult): string {
   const lines = [
-    `🍕 Pizzacalc — ${r.numBalls} × ${Math.round(r.ballWeight)}g`,
+    `Pizzacalc — ${r.numBalls} × ${Math.round(r.ballWeight)}g`,
     `Hydration ${Math.round(r.hydrationPct)}% · Salt ${r.saltPct.toFixed(1)}% · Yeast ${r.yeastPct.toFixed(3)}%`,
     '',
     `Flour: ${formatGrams(r.flour)}`,

@@ -292,7 +292,51 @@ input[type="range"] {
 
 .nav-item.active { color: var(--accent); }
 
-.nav-icon { font-size: 20px; }
+.nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+}
+
+/* Collapsible sections */
+.collapsible { padding: 0; }
+
+.collapsible-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.collapsible-header h2 { margin: 0; }
+
+.collapsible-body {
+  padding: 0 16px 16px;
+}
+
+.chevron {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--text-muted);
+  border-bottom: 2px solid var(--text-muted);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+  margin-bottom: 4px;
+}
+
+.chevron.open {
+  transform: rotate(-135deg);
+  margin-bottom: 0;
+  margin-top: 4px;
+}
 
 /* Modal */
 .modal-backdrop {
@@ -374,7 +418,6 @@ input[type="range"] {
   gap: 12px;
 }
 
-.splash-emoji { font-size: 72px; }
 .splash-title {
   font-size: 32px;
   margin: 0;

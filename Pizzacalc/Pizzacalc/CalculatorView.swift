@@ -66,7 +66,6 @@ func formatGrams(_ value: Double) -> String {
 }
 
 struct CalculatorView: View {
-    @State private var pizzaType = "Normal"
     @State private var amountOfPizzas = 1
     @State private var waterRatio = 0.65
     @State private var selectedYeastSetting = "Overnight"
@@ -74,10 +73,11 @@ struct CalculatorView: View {
     @State private var showingShareSheet = false
     @State private var shareText = ""
     @State private var showingPresets = false
+    @State private var perBallExpanded = false
+    @State private var bakersExpanded = false
 
     @EnvironmentObject var settings: Settings
 
-    private let pizzaTypes = ["Normal", "Thin Crust"]
     private let waterRatios = [0.60, 0.65, 0.70, 0.75]
     private let yeastSettings = ["Overnight", "9 hours", "3 hours"]
 
@@ -89,7 +89,6 @@ struct CalculatorView: View {
                         showingPresets = true
                     } label: {
                         HStack {
-                            Image(systemName: "wand.and.stars")
                             Text("Apply a style preset")
                             Spacer()
                             Image(systemName: "chevron.right")
@@ -97,13 +96,6 @@ struct CalculatorView: View {
                                 .font(.footnote)
                         }
                     }
-                }
-
-                Section(header: Text("Pizza Type")) {
-                    Picker("Pizza Type", selection: $pizzaType) {
-                        ForEach(pizzaTypes, id: \.self) { Text($0) }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
                 }
 
                 Section(header: Text("Fermentation")) {
@@ -141,15 +133,6 @@ struct CalculatorView: View {
                 }
 
                 if let r = result {
-                    Section(header: Text("Per Ball (\(Int(r.ballWeight.rounded()))g × \(r.numBalls))")) {
-                        resultRow("Flour", formatGrams(r.flour / Double(r.numBalls)))
-                        resultRow("Water", formatGrams(r.water / Double(r.numBalls)))
-                        resultRow("Salt", formatGrams(r.salt / Double(r.numBalls)))
-                        resultRow("Yeast", formatGrams(r.yeast / Double(r.numBalls)))
-                        if let oil = r.oil { resultRow("Olive Oil", formatGrams(oil / Double(r.numBalls))) }
-                        if let sugar = r.sugar { resultRow("Sugar", formatGrams(sugar / Double(r.numBalls))) }
-                    }
-
                     Section(header: Text("Total Batch")) {
                         resultRow("Flour", formatGrams(r.flour))
                         resultRow("Water", formatGrams(r.water))
@@ -164,20 +147,34 @@ struct CalculatorView: View {
                         }
                     }
 
-                    Section(header: Text("Baker's Percentages")) {
-                        resultRow("Hydration", String(format: "%.0f%%", r.hydrationPct))
-                        resultRow("Salt", String(format: "%.2f%%", r.saltPct))
-                        resultRow("Yeast", String(format: "%.3f%%", r.yeastPct))
+                    Section {
+                        DisclosureGroup(isExpanded: $perBallExpanded) {
+                            resultRow("Flour", formatGrams(r.flour / Double(r.numBalls)))
+                            resultRow("Water", formatGrams(r.water / Double(r.numBalls)))
+                            resultRow("Salt", formatGrams(r.salt / Double(r.numBalls)))
+                            resultRow("Yeast", formatGrams(r.yeast / Double(r.numBalls)))
+                            if let oil = r.oil { resultRow("Olive Oil", formatGrams(oil / Double(r.numBalls))) }
+                            if let sugar = r.sugar { resultRow("Sugar", formatGrams(sugar / Double(r.numBalls))) }
+                        } label: {
+                            Text("Per Ball (\(Int(r.ballWeight.rounded()))g × \(r.numBalls))")
+                        }
+                    }
+
+                    Section {
+                        DisclosureGroup(isExpanded: $bakersExpanded) {
+                            resultRow("Hydration", String(format: "%.0f%%", r.hydrationPct))
+                            resultRow("Salt", String(format: "%.2f%%", r.saltPct))
+                            resultRow("Yeast", String(format: "%.3f%%", r.yeastPct))
+                        } label: {
+                            Text("Baker's Percentages")
+                        }
                     }
 
                     Button {
                         shareText = buildShareText(r)
                         showingShareSheet = true
                     } label: {
-                        HStack {
-                            Image(systemName: "square.and.arrow.up")
-                            Text("Copy / Share Recipe")
-                        }
+                        Text("Copy / Share Recipe")
                     }
                 }
             }
@@ -207,12 +204,8 @@ struct CalculatorView: View {
     }
 
     private func calculate() {
-        let ballWeight = pizzaType == "Normal"
-            ? settings.normalPizzaDoughBallWeight
-            : settings.thinCrustDoughBallWeight
-
         // Clamp to sane ranges defensively.
-        let clampedBall = max(50, min(1000, ballWeight))
+        let clampedBall = max(50, min(1000, settings.ballWeight))
         let clampedCount = max(1, min(50, amountOfPizzas))
 
         result = DoughCalculator.calculate(
@@ -227,8 +220,7 @@ struct CalculatorView: View {
     }
 
     private func apply(preset: PizzaPreset) {
-        pizzaType = "Normal"
-        settings.normalPizzaDoughBallWeight = preset.ballWeight
+        settings.ballWeight = preset.ballWeight
         settings.saltRatio = preset.saltPct
         settings.includeOliveOil = preset.includeOil
         settings.oliveOilRatio = preset.oilPct
@@ -250,7 +242,7 @@ struct CalculatorView: View {
 
     private func buildShareText(_ r: DoughResult) -> String {
         var lines: [String] = []
-        lines.append("🍕 Pizzacalc — \(r.numBalls) × \(Int(r.ballWeight.rounded()))g")
+        lines.append("Pizzacalc — \(r.numBalls) × \(Int(r.ballWeight.rounded()))g")
         lines.append("Hydration \(Int(r.hydrationPct))% · Salt \(String(format: "%.1f", r.saltPct))% · Yeast \(String(format: "%.3f", r.yeastPct))%")
         lines.append("")
         lines.append("Flour: \(formatGrams(r.flour))")

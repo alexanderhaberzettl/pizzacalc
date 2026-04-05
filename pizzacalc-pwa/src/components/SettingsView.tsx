@@ -9,18 +9,12 @@ export default function SettingsView() {
       <h1>Advanced Settings</h1>
 
       <section className="card">
-        <h2>Dough Ball Sizes</h2>
+        <h2>Dough Ball Weight</h2>
         <SliderRow
-          label="Normal"
-          value={settings.normalPizzaDoughBallWeight}
+          label="Per ball"
+          value={settings.ballWeight}
           min={150} max={750} step={5} suffix="g"
-          onChange={v => updateSettings({ normalPizzaDoughBallWeight: v })}
-        />
-        <SliderRow
-          label="Thin Crust"
-          value={settings.thinCrustDoughBallWeight}
-          min={150} max={750} step={5} suffix="g"
-          onChange={v => updateSettings({ thinCrustDoughBallWeight: v })}
+          onChange={v => updateSettings({ ballWeight: v })}
         />
       </section>
 

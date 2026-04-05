@@ -5,14 +5,10 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section(header: Text("Dough Ball Sizes")) {
+            Section(header: Text("Dough Ball Weight")) {
                 VStack(alignment: .leading) {
-                    Text("Normal: \(Int(settings.normalPizzaDoughBallWeight)) g")
-                    Slider(value: $settings.normalPizzaDoughBallWeight, in: 150...750, step: 5)
-                }
-                VStack(alignment: .leading) {
-                    Text("Thin Crust: \(Int(settings.thinCrustDoughBallWeight)) g")
-                    Slider(value: $settings.thinCrustDoughBallWeight, in: 150...750, step: 5)
+                    Text("Per ball: \(Int(settings.ballWeight)) g")
+                    Slider(value: $settings.ballWeight, in: 150...750, step: 5)
                 }
             }
 

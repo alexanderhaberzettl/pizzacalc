@@ -10,27 +10,23 @@ import {
   PizzaPreset,
 } from '../lib/dough';
 
-const PIZZA_TYPES = ['Normal', 'Thin Crust'] as const;
 const HYDRATIONS = [0.60, 0.65, 0.70, 0.75];
 const YEAST_OPTIONS = ['Overnight', '9 hours', '3 hours'] as const;
 
 export default function CalculatorView() {
   const { settings, updateSettings } = useSettings();
-  const [pizzaType, setPizzaType] = useState<'Normal' | 'Thin Crust'>('Normal');
   const [amountOfPizzas, setAmountOfPizzas] = useState(1);
   const [hydration, setHydration] = useState(0.65);
   const [yeastLabel, setYeastLabel] = useState<typeof YEAST_OPTIONS[number]>('Overnight');
   const [result, setResult] = useState<DoughResult | null>(null);
   const [showPresets, setShowPresets] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [perBallOpen, setPerBallOpen] = useState(false);
+  const [bakersOpen, setBakersOpen] = useState(false);
 
   const calculate = () => {
-    const ballWeight = pizzaType === 'Normal'
-      ? settings.normalPizzaDoughBallWeight
-      : settings.thinCrustDoughBallWeight;
-
     setResult(calculateDough({
-      ballWeight,
+      ballWeight: settings.ballWeight,
       numBalls: amountOfPizzas,
       hydration,
       saltPct: settings.saltRatio,
@@ -42,14 +38,13 @@ export default function CalculatorView() {
 
   const applyPreset = (p: PizzaPreset) => {
     updateSettings({
-      normalPizzaDoughBallWeight: p.ballWeight,
+      ballWeight: p.ballWeight,
       saltRatio: p.saltPct,
       includeOliveOil: p.includeOil,
       oliveOilRatio: p.oilPct,
       includeSugar: p.includeSugar,
       sugarRatio: p.sugarPct,
     });
-    setPizzaType('Normal');
     setHydration(p.hydration);
     setYeastLabel(p.yeastLabel);
     setShowPresets(false);
@@ -77,21 +72,8 @@ export default function CalculatorView() {
 
       <section className="card">
         <button className="preset-btn" onClick={() => setShowPresets(true)}>
-          ✨ Apply a style preset
+          Apply a style preset
         </button>
-      </section>
-
-      <section className="card">
-        <label className="card-label">Pizza Type</label>
-        <div className="segmented">
-          {PIZZA_TYPES.map(t => (
-            <button
-              key={t}
-              className={pizzaType === t ? 'seg active' : 'seg'}
-              onClick={() => setPizzaType(t)}
-            >{t}</button>
-          ))}
-        </div>
       </section>
 
       <section className="card">
@@ -142,16 +124,6 @@ export default function CalculatorView() {
       {result && (
         <>
           <section className="card">
-            <h2>Per Ball ({Math.round(result.ballWeight)}g × {result.numBalls})</h2>
-            <Row label="Flour" value={formatGrams(result.flour / result.numBalls)} />
-            <Row label="Water" value={formatGrams(result.water / result.numBalls)} />
-            <Row label="Salt" value={formatGrams(result.salt / result.numBalls)} />
-            <Row label="Yeast" value={formatGrams(result.yeast / result.numBalls)} />
-            {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil / result.numBalls)} />}
-            {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar / result.numBalls)} />}
-          </section>
-
-          <section className="card">
             <h2>Total Batch</h2>
             <Row label="Flour" value={formatGrams(result.flour)} />
             <Row label="Water" value={formatGrams(result.water)} />
@@ -162,15 +134,31 @@ export default function CalculatorView() {
             <Row label="Total" value={formatGrams(result.totalWeight)} bold />
           </section>
 
-          <section className="card">
-            <h2>Baker's Percentages</h2>
+          <Collapsible
+            title={`Per Ball (${Math.round(result.ballWeight)}g × ${result.numBalls})`}
+            open={perBallOpen}
+            onToggle={() => setPerBallOpen(o => !o)}
+          >
+            <Row label="Flour" value={formatGrams(result.flour / result.numBalls)} />
+            <Row label="Water" value={formatGrams(result.water / result.numBalls)} />
+            <Row label="Salt" value={formatGrams(result.salt / result.numBalls)} />
+            <Row label="Yeast" value={formatGrams(result.yeast / result.numBalls)} />
+            {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil / result.numBalls)} />}
+            {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar / result.numBalls)} />}
+          </Collapsible>
+
+          <Collapsible
+            title="Baker's Percentages"
+            open={bakersOpen}
+            onToggle={() => setBakersOpen(o => !o)}
+          >
             <Row label="Hydration" value={`${Math.round(result.hydrationPct)}%`} />
             <Row label="Salt" value={`${result.saltPct.toFixed(2)}%`} />
             <Row label="Yeast" value={`${result.yeastPct.toFixed(3)}%`} />
-          </section>
+          </Collapsible>
 
           <button className="calc-btn secondary" onClick={share}>
-            {copied ? '✓ Copied to clipboard' : '📋 Copy / Share Recipe'}
+            {copied ? 'Copied to clipboard' : 'Copy / Share Recipe'}
           </button>
         </>
       )}
@@ -201,5 +189,21 @@ function Row({ label, value, bold }: { label: string; value: string; bold?: bool
       <span>{label}</span>
       <span>{value}</span>
     </div>
+  );
+}
+
+function Collapsible({
+  title, open, onToggle, children,
+}: {
+  title: string; open: boolean; onToggle: () => void; children: React.ReactNode;
+}) {
+  return (
+    <section className="card collapsible">
+      <button className="collapsible-header" onClick={onToggle} aria-expanded={open}>
+        <h2>{title}</h2>
+        <span className={open ? 'chevron open' : 'chevron'} aria-hidden="true" />
+      </button>
+      {open && <div className="collapsible-body">{children}</div>}
+    </section>
   );
 }

@@ -5,8 +5,7 @@ import Combine
 /// app remembers preferences across launches.
 class Settings: ObservableObject {
     // Defaults (also used by "Reset to default")
-    static let defaultNormalBallWeight: Double = 335.0
-    static let defaultThinCrustBallWeight: Double = 280.0
+    static let defaultBallWeight: Double = 335.0
     static let defaultSaltRatio: Double = 2.0
     static let defaultOliveOilRatio: Double = 2.0
     static let defaultSugarRatio: Double = 1.5
@@ -16,8 +15,7 @@ class Settings: ObservableObject {
     static let defaultYeast9h: Double = 0.30
     static let defaultYeast3h: Double = 1.20
 
-    @Published var normalPizzaDoughBallWeight: Double { didSet { save() } }
-    @Published var thinCrustDoughBallWeight: Double { didSet { save() } }
+    @Published var ballWeight: Double { didSet { save() } }
     @Published var saltRatio: Double { didSet { save() } }
     @Published var includeOliveOil: Bool { didSet { save() } }
     @Published var oliveOilRatio: Double { didSet { save() } }
@@ -32,8 +30,7 @@ class Settings: ObservableObject {
 
     init() {
         let d = UserDefaults.standard
-        normalPizzaDoughBallWeight = d.object(forKey: "normalBallWeight") as? Double ?? Settings.defaultNormalBallWeight
-        thinCrustDoughBallWeight = d.object(forKey: "thinCrustBallWeight") as? Double ?? Settings.defaultThinCrustBallWeight
+        ballWeight = d.object(forKey: "ballWeight") as? Double ?? Settings.defaultBallWeight
         saltRatio = d.object(forKey: "saltRatio") as? Double ?? Settings.defaultSaltRatio
         includeOliveOil = d.object(forKey: "includeOliveOil") as? Bool ?? false
         oliveOilRatio = d.object(forKey: "oliveOilRatio") as? Double ?? Settings.defaultOliveOilRatio
@@ -47,8 +44,7 @@ class Settings: ObservableObject {
 
     private func save() {
         guard isLoaded else { return }
-        defaults.set(normalPizzaDoughBallWeight, forKey: "normalBallWeight")
-        defaults.set(thinCrustDoughBallWeight, forKey: "thinCrustBallWeight")
+        defaults.set(ballWeight, forKey: "ballWeight")
         defaults.set(saltRatio, forKey: "saltRatio")
         defaults.set(includeOliveOil, forKey: "includeOliveOil")
         defaults.set(oliveOilRatio, forKey: "oliveOilRatio")
@@ -60,8 +56,7 @@ class Settings: ObservableObject {
     }
 
     func resetToDefault() {
-        normalPizzaDoughBallWeight = Settings.defaultNormalBallWeight
-        thinCrustDoughBallWeight = Settings.defaultThinCrustBallWeight
+        ballWeight = Settings.defaultBallWeight
         saltRatio = Settings.defaultSaltRatio
         includeOliveOil = false
         oliveOilRatio = Settings.defaultOliveOilRatio

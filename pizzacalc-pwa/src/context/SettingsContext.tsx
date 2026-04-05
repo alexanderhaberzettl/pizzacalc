@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export interface Settings {
-  normalPizzaDoughBallWeight: number;
-  thinCrustDoughBallWeight: number;
+  ballWeight: number;             // grams per dough ball
   saltRatio: number;              // % of flour
   includeOliveOil: boolean;
   oliveOilRatio: number;          // % of flour
@@ -14,8 +13,7 @@ export interface Settings {
 }
 
 export const defaultSettings: Settings = {
-  normalPizzaDoughBallWeight: 335,
-  thinCrustDoughBallWeight: 280,
+  ballWeight: 335,
   saltRatio: 2.0,
   includeOliveOil: false,
   oliveOilRatio: 2.0,
@@ -35,7 +33,7 @@ interface SettingsContextType {
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'pizzacalc.settings.v2';
+const STORAGE_KEY = 'pizzacalc.settings.v3';
 
 function loadSettings(): Settings {
   try {
