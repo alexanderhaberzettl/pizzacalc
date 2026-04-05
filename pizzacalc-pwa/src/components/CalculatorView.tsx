@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSettings, yeastPctFor, defaultSettings } from '../context/SettingsContext';
+import { useSettings, yeastPctFor } from '../context/SettingsContext';
 import {
   calculateDough,
   formatGrams,
