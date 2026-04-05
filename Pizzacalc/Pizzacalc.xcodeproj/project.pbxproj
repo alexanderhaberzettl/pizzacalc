@@ -1,0 +1,644 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		33A7C0AD2C2579B800121D39 /* PizzacalcApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A7C0AC2C2579B800121D39 /* PizzacalcApp.swift */; };
+		33A7C0AF2C2579B800121D39 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A7C0AE2C2579B800121D39 /* ContentView.swift */; };
+		33A7C0B12C2579BA00121D39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33A7C0B02C2579BA00121D39 /* Assets.xcassets */; };
+		33A7C0B52C2579BA00121D39 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33A7C0B42C2579BA00121D39 /* Preview Assets.xcassets */; };
+		33A7C0BF2C2579BA00121D39 /* PizzacalcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A7C0BE2C2579BA00121D39 /* PizzacalcTests.swift */; };
+		33A7C0C92C2579BA00121D39 /* PizzacalcUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A7C0C82C2579BA00121D39 /* PizzacalcUITests.swift */; };
+		33A7C0CB2C2579BA00121D39 /* PizzacalcUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A7C0CA2C2579BA00121D39 /* PizzacalcUITestsLaunchTests.swift */; };
+		33A7C0D82C257CDF00121D39 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A7C0D72C257CDF00121D39 /* CalculatorView.swift */; };
+		33A7C0DA2C257D9700121D39 /* RecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A7C0D92C257D9700121D39 /* RecipesView.swift */; };
+		33FBD5D12C272EC40084BF70 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FBD5D02C272EC40084BF70 /* SettingsView.swift */; };
+		33FBD5D32C272F560084BF70 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FBD5D22C272F560084BF70 /* Settings.swift */; };
+		33FBD5D52C2738400084BF70 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FBD5D42C2738400084BF70 /* SplashView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		33A7C0BB2C2579BA00121D39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 33A7C0A12C2579B800121D39 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 33A7C0A82C2579B800121D39;
+			remoteInfo = Pizzacalc;
+		};
+		33A7C0C52C2579BA00121D39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 33A7C0A12C2579B800121D39 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 33A7C0A82C2579B800121D39;
+			remoteInfo = Pizzacalc;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		33A7C0A92C2579B800121D39 /* Pizzacalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pizzacalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		33A7C0AC2C2579B800121D39 /* PizzacalcApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzacalcApp.swift; sourceTree = "<group>"; };
+		33A7C0AE2C2579B800121D39 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		33A7C0B02C2579BA00121D39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		33A7C0B22C2579BA00121D39 /* Pizzacalc.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pizzacalc.entitlements; sourceTree = "<group>"; };
+		33A7C0B42C2579BA00121D39 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		33A7C0BA2C2579BA00121D39 /* PizzacalcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PizzacalcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		33A7C0BE2C2579BA00121D39 /* PizzacalcTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzacalcTests.swift; sourceTree = "<group>"; };
+		33A7C0C42C2579BA00121D39 /* PizzacalcUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PizzacalcUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		33A7C0C82C2579BA00121D39 /* PizzacalcUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzacalcUITests.swift; sourceTree = "<group>"; };
+		33A7C0CA2C2579BA00121D39 /* PizzacalcUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzacalcUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		33A7C0D72C257CDF00121D39 /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
+		33A7C0D92C257D9700121D39 /* RecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesView.swift; sourceTree = "<group>"; };
+		33FBD5D02C272EC40084BF70 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		33FBD5D22C272F560084BF70 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		33FBD5D42C2738400084BF70 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		33A7C0A62C2579B800121D39 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		33A7C0B72C2579BA00121D39 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		33A7C0C12C2579BA00121D39 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		33A7C0A02C2579B800121D39 = {
+			isa = PBXGroup;
+			children = (
+				33A7C0AB2C2579B800121D39 /* Pizzacalc */,
+				33A7C0BD2C2579BA00121D39 /* PizzacalcTests */,
+				33A7C0C72C2579BA00121D39 /* PizzacalcUITests */,
+				33A7C0AA2C2579B800121D39 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		33A7C0AA2C2579B800121D39 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				33A7C0A92C2579B800121D39 /* Pizzacalc.app */,
+				33A7C0BA2C2579BA00121D39 /* PizzacalcTests.xctest */,
+				33A7C0C42C2579BA00121D39 /* PizzacalcUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		33A7C0AB2C2579B800121D39 /* Pizzacalc */ = {
+			isa = PBXGroup;
+			children = (
+				33A7C0AC2C2579B800121D39 /* PizzacalcApp.swift */,
+				33A7C0AE2C2579B800121D39 /* ContentView.swift */,
+				33A7C0B02C2579BA00121D39 /* Assets.xcassets */,
+				33A7C0B22C2579BA00121D39 /* Pizzacalc.entitlements */,
+				33A7C0B32C2579BA00121D39 /* Preview Content */,
+				33A7C0D72C257CDF00121D39 /* CalculatorView.swift */,
+				33A7C0D92C257D9700121D39 /* RecipesView.swift */,
+				33FBD5D02C272EC40084BF70 /* SettingsView.swift */,
+				33FBD5D22C272F560084BF70 /* Settings.swift */,
+				33FBD5D42C2738400084BF70 /* SplashView.swift */,
+			);
+			path = Pizzacalc;
+			sourceTree = "<group>";
+		};
+		33A7C0B32C2579BA00121D39 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				33A7C0B42C2579BA00121D39 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		33A7C0BD2C2579BA00121D39 /* PizzacalcTests */ = {
+			isa = PBXGroup;
+			children = (
+				33A7C0BE2C2579BA00121D39 /* PizzacalcTests.swift */,
+			);
+			path = PizzacalcTests;
+			sourceTree = "<group>";
+		};
+		33A7C0C72C2579BA00121D39 /* PizzacalcUITests */ = {
+			isa = PBXGroup;
+			children = (
+				33A7C0C82C2579BA00121D39 /* PizzacalcUITests.swift */,
+				33A7C0CA2C2579BA00121D39 /* PizzacalcUITestsLaunchTests.swift */,
+			);
+			path = PizzacalcUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		33A7C0A82C2579B800121D39 /* Pizzacalc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 33A7C0CE2C2579BA00121D39 /* Build configuration list for PBXNativeTarget "Pizzacalc" */;
+			buildPhases = (
+				33A7C0A52C2579B800121D39 /* Sources */,
+				33A7C0A62C2579B800121D39 /* Frameworks */,
+				33A7C0A72C2579B800121D39 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Pizzacalc;
+			productName = Pizzacalc;
+			productReference = 33A7C0A92C2579B800121D39 /* Pizzacalc.app */;
+			productType = "com.apple.product-type.application";
+		};
+		33A7C0B92C2579BA00121D39 /* PizzacalcTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 33A7C0D12C2579BA00121D39 /* Build configuration list for PBXNativeTarget "PizzacalcTests" */;
+			buildPhases = (
+				33A7C0B62C2579BA00121D39 /* Sources */,
+				33A7C0B72C2579BA00121D39 /* Frameworks */,
+				33A7C0B82C2579BA00121D39 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				33A7C0BC2C2579BA00121D39 /* PBXTargetDependency */,
+			);
+			name = PizzacalcTests;
+			productName = PizzacalcTests;
+			productReference = 33A7C0BA2C2579BA00121D39 /* PizzacalcTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		33A7C0C32C2579BA00121D39 /* PizzacalcUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 33A7C0D42C2579BA00121D39 /* Build configuration list for PBXNativeTarget "PizzacalcUITests" */;
+			buildPhases = (
+				33A7C0C02C2579BA00121D39 /* Sources */,
+				33A7C0C12C2579BA00121D39 /* Frameworks */,
+				33A7C0C22C2579BA00121D39 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				33A7C0C62C2579BA00121D39 /* PBXTargetDependency */,
+			);
+			name = PizzacalcUITests;
+			productName = PizzacalcUITests;
+			productReference = 33A7C0C42C2579BA00121D39 /* PizzacalcUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		33A7C0A12C2579B800121D39 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					33A7C0A82C2579B800121D39 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					33A7C0B92C2579BA00121D39 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 33A7C0A82C2579B800121D39;
+					};
+					33A7C0C32C2579BA00121D39 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 33A7C0A82C2579B800121D39;
+					};
+				};
+			};
+			buildConfigurationList = 33A7C0A42C2579B800121D39 /* Build configuration list for PBXProject "Pizzacalc" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 33A7C0A02C2579B800121D39;
+			productRefGroup = 33A7C0AA2C2579B800121D39 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				33A7C0A82C2579B800121D39 /* Pizzacalc */,
+				33A7C0B92C2579BA00121D39 /* PizzacalcTests */,
+				33A7C0C32C2579BA00121D39 /* PizzacalcUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		33A7C0A72C2579B800121D39 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33A7C0B52C2579BA00121D39 /* Preview Assets.xcassets in Resources */,
+				33A7C0B12C2579BA00121D39 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		33A7C0B82C2579BA00121D39 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		33A7C0C22C2579BA00121D39 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		33A7C0A52C2579B800121D39 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33FBD5D32C272F560084BF70 /* Settings.swift in Sources */,
+				33FBD5D12C272EC40084BF70 /* SettingsView.swift in Sources */,
+				33A7C0AF2C2579B800121D39 /* ContentView.swift in Sources */,
+				33A7C0D82C257CDF00121D39 /* CalculatorView.swift in Sources */,
+				33A7C0DA2C257D9700121D39 /* RecipesView.swift in Sources */,
+				33A7C0AD2C2579B800121D39 /* PizzacalcApp.swift in Sources */,
+				33FBD5D52C2738400084BF70 /* SplashView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		33A7C0B62C2579BA00121D39 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33A7C0BF2C2579BA00121D39 /* PizzacalcTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		33A7C0C02C2579BA00121D39 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33A7C0CB2C2579BA00121D39 /* PizzacalcUITestsLaunchTests.swift in Sources */,
+				33A7C0C92C2579BA00121D39 /* PizzacalcUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		33A7C0BC2C2579BA00121D39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 33A7C0A82C2579B800121D39 /* Pizzacalc */;
+			targetProxy = 33A7C0BB2C2579BA00121D39 /* PBXContainerItemProxy */;
+		};
+		33A7C0C62C2579BA00121D39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 33A7C0A82C2579B800121D39 /* Pizzacalc */;
+			targetProxy = 33A7C0C52C2579BA00121D39 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		33A7C0CC2C2579BA00121D39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		33A7C0CD2C2579BA00121D39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		33A7C0CF2C2579BA00121D39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Pizzacalc/Pizzacalc.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Pizzacalc/Preview Content\"";
+				DEVELOPMENT_TEAM = 7LY8GAC628;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Pizzacalc;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AlexanderHaberzettl.Pizzacalc;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		33A7C0D02C2579BA00121D39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Pizzacalc/Pizzacalc.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Pizzacalc/Preview Content\"";
+				DEVELOPMENT_TEAM = 7LY8GAC628;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Pizzacalc;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AlexanderHaberzettl.Pizzacalc;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		33A7C0D22C2579BA00121D39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AlexanderHaberzettl.PizzacalcTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pizzacalc.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pizzacalc";
+			};
+			name = Debug;
+		};
+		33A7C0D32C2579BA00121D39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AlexanderHaberzettl.PizzacalcTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pizzacalc.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pizzacalc";
+			};
+			name = Release;
+		};
+		33A7C0D52C2579BA00121D39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AlexanderHaberzettl.PizzacalcUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Pizzacalc;
+			};
+			name = Debug;
+		};
+		33A7C0D62C2579BA00121D39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AlexanderHaberzettl.PizzacalcUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Pizzacalc;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		33A7C0A42C2579B800121D39 /* Build configuration list for PBXProject "Pizzacalc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				33A7C0CC2C2579BA00121D39 /* Debug */,
+				33A7C0CD2C2579BA00121D39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		33A7C0CE2C2579BA00121D39 /* Build configuration list for PBXNativeTarget "Pizzacalc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				33A7C0CF2C2579BA00121D39 /* Debug */,
+				33A7C0D02C2579BA00121D39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		33A7C0D12C2579BA00121D39 /* Build configuration list for PBXNativeTarget "PizzacalcTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				33A7C0D22C2579BA00121D39 /* Debug */,
+				33A7C0D32C2579BA00121D39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		33A7C0D42C2579BA00121D39 /* Build configuration list for PBXNativeTarget "PizzacalcUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				33A7C0D52C2579BA00121D39 /* Debug */,
+				33A7C0D62C2579BA00121D39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 33A7C0A12C2579B800121D39 /* Project object */;
+}
