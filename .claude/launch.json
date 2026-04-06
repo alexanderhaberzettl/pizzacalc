@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "pizzacalc",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["start", "--prefix", "pizzacalc-pwa"],
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": ["/Users/alexanderhaberzettl/Downloads/Pizzacalc/.claude/start.sh"],
       "port": 3000
     }
   ]
