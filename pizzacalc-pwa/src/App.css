@@ -665,6 +665,27 @@ input[type="range"] {
   color: var(--text-muted);
 }
 
+/* ─── Nerd Mode ───────────────────────────────────────── */
+.disclaimer-card {
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.nerd-section-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: -0.2px;
+}
+
 /* ─── Splash ──────────────────────────────────────────── */
 .splash {
   position: fixed;

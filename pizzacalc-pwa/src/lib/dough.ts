@@ -111,6 +111,188 @@ export function fermentationHint(label: string): string {
   }
 }
 
+// ─── Pre-ferment / Nerd Mode ──────────────────────────────────────────────────
+
+export type PreFermentType = 'none' | 'poolish' | 'biga' | 'tiga';
+
+/** Hydration as a fraction (water / flour) for each pre-ferment type */
+export const PRE_FERMENT_HYDRATIONS: Record<PreFermentType, number> = {
+  none: 0,
+  poolish: 1.00,   // 100% hydration
+  biga: 0.55,      // 55% hydration
+  tiga: 0.70,      // 70% hydration
+};
+
+/** Yeast as a percent of pre-ferment flour for each type */
+export const PRE_FERMENT_YEAST: Record<PreFermentType, number> = {
+  none: 0,
+  poolish: 0.05,   // 0.05% yeast
+  biga: 0.20,      // 0.20% yeast
+  tiga: 0.10,      // 0.10% yeast
+};
+
+export interface NerdDoughInput extends DoughInput {
+  preFermentType: PreFermentType;
+  preFermentFlourPct: number;  // % of total flour used in pre-ferment (e.g. 20)
+  isSourdough: boolean;
+  starterPct: number;           // % of total flour weight as starter (100% hydration)
+  wholeGrainPct: number;        // % of total flour that is whole grain
+}
+
+export interface PreFermentBreakdown {
+  flour: number;
+  water: number;
+  yeast: number;
+  hydrationPct: number;
+  fermentTimeHint: string;
+}
+
+export interface NerdDoughResult extends DoughResult {
+  preFerment: PreFermentBreakdown | null;
+  finalMix: {
+    flour: number;
+    water: number;
+    salt: number;
+    yeast: number | null;      // null if sourdough
+    oil: number | null;
+    sugar: number | null;
+    starter: number | null;    // null if yeast
+    starterFlour: number | null;
+    starterWater: number | null;
+  };
+  wholeGrainFlour: number;
+  whiteFlour: number;
+  wholeGrainPct: number;
+}
+
+function preFermentTimeHint(type: PreFermentType): string {
+  switch (type) {
+    case 'poolish': return 'Ferment at room temp 8–16h, until bubbly and domed.';
+    case 'biga': return 'Ferment at room temp 12–24h. Stiff dough, should smell sweet/yeasty.';
+    case 'tiga': return 'Ferment at room temp 10–20h. Hybrid between poolish and biga.';
+    default: return '';
+  }
+}
+
+export function calculateNerdDough(input: NerdDoughInput): NerdDoughResult {
+  // Base calculation using existing function
+  const base = calculateDough(input);
+
+  // Pre-ferment breakdown
+  let preFerment: PreFermentBreakdown | null = null;
+  let pfFlour = 0;
+  let pfWater = 0;
+  let pfYeast = 0;
+
+  if (input.preFermentType !== 'none') {
+    const hydration = PRE_FERMENT_HYDRATIONS[input.preFermentType];
+    const yeastPct = PRE_FERMENT_YEAST[input.preFermentType];
+    pfFlour = base.flour * input.preFermentFlourPct / 100;
+    pfWater = pfFlour * hydration;
+    pfYeast = pfFlour * yeastPct / 100;
+    preFerment = {
+      flour: pfFlour,
+      water: pfWater,
+      yeast: pfYeast,
+      hydrationPct: hydration * 100,
+      fermentTimeHint: preFermentTimeHint(input.preFermentType),
+    };
+  }
+
+  // Sourdough starter
+  let starter: number | null = null;
+  let starterFlour: number | null = null;
+  let starterWater: number | null = null;
+  let starterFlourAmount = 0;
+  let starterWaterAmount = 0;
+
+  if (input.isSourdough) {
+    starter = base.flour * input.starterPct / 100;
+    // 100% hydration starter: half flour, half water
+    starterFlour = starter / 2;
+    starterWater = starter / 2;
+    starterFlourAmount = starterFlour;
+    starterWaterAmount = starterWater;
+  }
+
+  // Final mix = base minus pre-ferment minus starter contribution
+  const finalMix = {
+    flour: base.flour - pfFlour - starterFlourAmount,
+    water: base.water - pfWater - starterWaterAmount,
+    salt: base.salt,
+    yeast: input.isSourdough ? null : (base.yeast - pfYeast),
+    oil: base.oil,
+    sugar: base.sugar,
+    starter: input.isSourdough ? starter : null,
+    starterFlour: input.isSourdough ? starterFlour : null,
+    starterWater: input.isSourdough ? starterWater : null,
+  };
+
+  const wholeGrainFlour = base.flour * input.wholeGrainPct / 100;
+  const whiteFlour = base.flour - wholeGrainFlour;
+
+  return {
+    ...base,
+    preFerment,
+    finalMix,
+    wholeGrainFlour,
+    whiteFlour,
+    wholeGrainPct: input.wholeGrainPct,
+  };
+}
+
+export function buildNerdShareText(r: NerdDoughResult): string {
+  const lines = [
+    `Pizzacalc Nerd Mode — ${r.numBalls} × ${Math.round(r.ballWeight)}g`,
+    `Hydration ${Math.round(r.hydrationPct)}% · Salt ${r.saltPct.toFixed(1)}%`,
+    '',
+  ];
+
+  if (r.preFerment) {
+    const pfType = r.preFerment.hydrationPct === 100 ? 'Poolish'
+      : r.preFerment.hydrationPct === 55 ? 'Biga'
+      : r.preFerment.hydrationPct === 70 ? 'Tiga' : 'Pre-ferment';
+    lines.push(`── ${pfType} ──`);
+    lines.push(`Flour: ${formatGrams(r.preFerment.flour)}`);
+    lines.push(`Water: ${formatGrams(r.preFerment.water)}`);
+    lines.push(`Yeast: ${formatGrams(r.preFerment.yeast)}`);
+    lines.push(r.preFerment.fermentTimeHint);
+    lines.push('');
+  }
+
+  if (r.finalMix.starter != null) {
+    lines.push(`── Starter ──`);
+    lines.push(`Starter: ${formatGrams(r.finalMix.starter)}`);
+    lines.push('');
+  }
+
+  lines.push('── Final Mix ──');
+  lines.push(`Flour: ${formatGrams(r.finalMix.flour)}`);
+  lines.push(`Water: ${formatGrams(r.finalMix.water)}`);
+  lines.push(`Salt:  ${formatGrams(r.finalMix.salt)}`);
+  if (r.finalMix.yeast != null) lines.push(`Yeast: ${formatGrams(r.finalMix.yeast)}`);
+  if (r.finalMix.oil != null) lines.push(`Oil:   ${formatGrams(r.finalMix.oil)}`);
+  if (r.finalMix.sugar != null) lines.push(`Sugar: ${formatGrams(r.finalMix.sugar)}`);
+
+  lines.push('');
+  lines.push('── Total Batch ──');
+  lines.push(`Flour: ${formatGrams(r.flour)}`);
+  lines.push(`Water: ${formatGrams(r.water)}`);
+  lines.push(`Salt:  ${formatGrams(r.salt)}`);
+  if (r.finalMix.yeast != null) lines.push(`Yeast: ${formatGrams(r.yeast)}`);
+  if (r.oil != null) lines.push(`Oil:   ${formatGrams(r.oil)}`);
+  if (r.sugar != null) lines.push(`Sugar: ${formatGrams(r.sugar)}`);
+  lines.push(`Total: ${formatGrams(r.totalWeight)}`);
+
+  if (r.wholeGrainPct > 0) {
+    lines.push('');
+    lines.push(`Whole grain: ${formatGrams(r.wholeGrainFlour)} (${Math.round(r.wholeGrainPct)}%)`);
+    lines.push(`White flour: ${formatGrams(r.whiteFlour)}`);
+  }
+
+  return lines.join('\n');
+}
+
 export function buildShareText(r: DoughResult): string {
   const lines = [
     `Pizzacalc — ${r.numBalls} × ${Math.round(r.ballWeight)}g`,

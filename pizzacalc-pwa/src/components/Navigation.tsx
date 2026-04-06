@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type Tab = 'calculator' | 'recipes';
+export type Tab = 'calculator' | 'recipes' | 'nerd';
 
 interface Props {
   active: Tab;
@@ -42,10 +42,21 @@ function BookIcon() {
   );
 }
 
+function FlaskIcon() {
+  return (
+    <svg {...ICON_PROPS}>
+      <path d="M9 3h6" />
+      <path d="M10 3v5l-5 9a1 1 0 0 0 .9 1.5h12.2a1 1 0 0 0 .9-1.5L14 8V3" />
+      <line x1="8.5" y1="13" x2="15.5" y2="13" />
+    </svg>
+  );
+}
+
 
 const TABS: { id: Tab; label: string; Icon: React.FC }[] = [
   { id: 'calculator', label: 'Calculator', Icon: CalcIcon },
   { id: 'recipes', label: 'Recipe', Icon: BookIcon },
+  { id: 'nerd', label: 'Nerd Mode', Icon: FlaskIcon },
 ];
 
 export default function Navigation({ active, onChange }: Props) {

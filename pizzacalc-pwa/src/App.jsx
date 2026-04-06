@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import CalculatorView from './components/CalculatorView';
 import RecipesView from './components/RecipesView';
+import NerdModeView from './components/NerdModeView';
 import SplashScreen from './components/SplashScreen';
 import Navigation from './components/Navigation';
 import { SettingsProvider } from './context/SettingsContext';
@@ -25,6 +26,7 @@ function App() {
         <main className="app-main">
           {tab === 'calculator' && <CalculatorView />}
           {tab === 'recipes' && <RecipesView />}
+          {tab === 'nerd' && <NerdModeView />}
         </main>
         <Navigation active={tab} onChange={setTab} />
       </div>
