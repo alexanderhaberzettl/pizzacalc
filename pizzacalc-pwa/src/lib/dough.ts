@@ -165,6 +165,33 @@ export interface NerdDoughResult extends DoughResult {
   wholeGrainPct: number;
 }
 
+export const SOURDOUGH_FERMENTATION_ESTIMATES = [
+  {
+    label: 'Cool & slow',
+    bulk: '12–16h bulk at 18–20°C',
+    proof: '2–4h proof at room temp',
+    note: 'Best flavor. Good if your kitchen is cool overnight.',
+  },
+  {
+    label: 'Room temp',
+    bulk: '4–8h bulk at 22–24°C',
+    proof: '1–2h proof at room temp',
+    note: 'Typical warm kitchen. Watch the dough, not the clock.',
+  },
+  {
+    label: 'Warm & fast',
+    bulk: '2–4h bulk at 26–28°C',
+    proof: '45–90min proof',
+    note: 'Active starter needed. Easy to over-proof — stay close.',
+  },
+  {
+    label: 'Cold retard',
+    bulk: '2–3h bulk at room temp, then 12–48h in fridge',
+    proof: '2–3h at room temp after fridge',
+    note: 'Most flexible. Shape before fridge or after — both work.',
+  },
+];
+
 function preFermentTimeHint(type: PreFermentType): string {
   switch (type) {
     case 'poolish': return 'Ferment at room temp 8–16h, until bubbly and domed.';

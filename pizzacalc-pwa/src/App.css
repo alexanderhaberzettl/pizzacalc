@@ -677,6 +677,49 @@ input[type="range"] {
   color: var(--text-muted);
 }
 
+.sourdough-disclaimer {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+
+.sourdough-estimates {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sourdough-estimate-row {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.sourdough-estimate-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.sourdough-estimate-times {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.sourdough-estimate-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 .nerd-section-title {
   display: block;
   font-size: 15px;
