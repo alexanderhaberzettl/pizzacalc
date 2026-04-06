@@ -99,6 +99,9 @@ export const PRESETS: PizzaPreset[] = [
   { name: 'Quick (3h)', description: 'Higher yeast, same-day dough',
     hydration: 0.65, saltPct: 2.0, includeOil: false, oilPct: 0,
     includeSugar: false, sugarPct: 0, yeastLabel: '3 hours', ballWeight: 280 },
+  { name: 'Babish No-Knead', description: '70% hydration, overnight room-temp, no oil/sugar. Based on Basics with Babish / Jim Lahey method.',
+    hydration: 0.70, saltPct: 3.2, includeOil: false, oilPct: 0,
+    includeSugar: false, sugarPct: 0, yeastLabel: 'Overnight', ballWeight: 220 },
 ];
 
 export function fermentationHint(label: string): string {
