@@ -60,9 +60,9 @@ export function calculateDough(input: DoughInput): DoughResult {
   };
 }
 
-/** Formats grams with sensible precision: mg under 1g, one decimal under 10g. */
+/** Formats grams: 3 decimals under 1g, 1 decimal under 10g, integer above. */
 export function formatGrams(value: number): string {
-  if (value < 1) return `${Math.round(value * 1000)} mg`;
+  if (value < 1) return `${value.toFixed(3)} g`;
   if (value < 10) return `${value.toFixed(1)} g`;
   return `${Math.round(value)} g`;
 }
