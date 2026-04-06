@@ -60,6 +60,7 @@ function DefaultSettingsCard() {
       <div className="stat-pills">
         <StatPill label="Ball weight" value={`${d.ballWeight}g`} />
         <StatPill label="Salt" value={`${d.saltRatio}%`} />
+        <StatPill label="48h yeast" value={`${d.yeast48h}%`} />
         <StatPill label="Overnight yeast" value={`${d.yeastOvernight}%`} />
         <StatPill label="9h yeast" value={`${d.yeast9h}%`} />
         <StatPill label="3h yeast" value={`${d.yeast3h}%`} />

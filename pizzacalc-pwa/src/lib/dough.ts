@@ -11,6 +11,7 @@ export interface DoughResult {
   hydrationPct: number;
   yeastPct: number;
   saltPct: number;
+  yeastLabel: string;
 }
 
 export interface DoughInput {
@@ -21,6 +22,7 @@ export interface DoughInput {
   yeastPct: number;       // % of flour
   oilPct: number | null;  // % of flour (null = disabled)
   sugarPct: number | null;
+  yeastLabel: string;
 }
 
 /**
@@ -57,6 +59,7 @@ export function calculateDough(input: DoughInput): DoughResult {
     hydrationPct: input.hydration * 100,
     yeastPct: input.yeastPct,
     saltPct: input.saltPct,
+    yeastLabel: input.yeastLabel,
   };
 }
 
@@ -101,6 +104,7 @@ export const PRESETS: PizzaPreset[] = [
 export function fermentationHint(label: string): string {
   switch (label) {
     case 'Overnight': return '12–24h cold bulk fermentation, then 2–3h at room temp. Best flavor.';
+    case '48 hours': return '48h cold bulk fermentation. Extended cold retard for maximum flavor development.';
     case '9 hours': return 'Room temperature bulk ferment, then ball and rest 1–2h.';
     case '3 hours': return 'Same-day dough. Bulk 1.5–2h, then ball and rest ~1h.';
     default: return '';
@@ -111,6 +115,7 @@ export function buildShareText(r: DoughResult): string {
   const lines = [
     `Pizzacalc — ${r.numBalls} × ${Math.round(r.ballWeight)}g`,
     `Hydration ${Math.round(r.hydrationPct)}% · Salt ${r.saltPct.toFixed(1)}% · Yeast ${r.yeastPct.toFixed(3)}%`,
+    `Fermentation: ${r.yeastLabel} — ${fermentationHint(r.yeastLabel)}`,
     '',
     `Flour: ${formatGrams(r.flour)}`,
     `Water: ${formatGrams(r.water)}`,

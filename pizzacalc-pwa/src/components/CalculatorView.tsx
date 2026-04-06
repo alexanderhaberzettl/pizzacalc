@@ -11,7 +11,7 @@ import {
 } from '../lib/dough';
 
 const HYDRATIONS = [0.60, 0.65, 0.70, 0.75];
-const YEAST_OPTIONS = ['Overnight', '9 hours', '3 hours'] as const;
+const YEAST_OPTIONS = ['48 hours', 'Overnight', '9 hours', '3 hours'] as const;
 
 export default function CalculatorView() {
   const { settings, updateSettings, resetToDefault } = useSettings();
@@ -35,6 +35,7 @@ export default function CalculatorView() {
       yeastPct: yeastPctFor(settings, yeastLabel),
       oilPct: settings.includeOliveOil ? settings.oliveOilRatio : null,
       sugarPct: settings.includeSugar ? settings.sugarRatio : null,
+      yeastLabel,
     }));
   };
 
@@ -194,6 +195,8 @@ export default function CalculatorView() {
 
         <div className="settings-section">
           <span className="settings-section-label">Yeast — % of flour, instant dry</span>
+          <SliderRow label="48 hours" value={settings.yeast48h} min={0.01} max={0.10} step={0.005} suffix="%" decimals={3}
+            onChange={v => updateSettings({ yeast48h: v })} />
           <SliderRow label="Overnight" value={settings.yeastOvernight} min={0.03} max={0.30} step={0.01} suffix="%" decimals={3}
             onChange={v => updateSettings({ yeastOvernight: v })} />
           <SliderRow label="9 hours" value={settings.yeast9h} min={0.10} max={0.80} step={0.05} suffix="%" decimals={2}

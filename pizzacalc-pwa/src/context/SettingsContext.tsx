@@ -8,6 +8,7 @@ export interface Settings {
   includeSugar: boolean;
   sugarRatio: number;             // % of flour
   yeastOvernight: number;         // % of flour
+  yeast48h: number;               // % of flour
   yeast9h: number;                // % of flour
   yeast3h: number;                // % of flour
 }
@@ -20,6 +21,7 @@ export const defaultSettings: Settings = {
   includeSugar: false,
   sugarRatio: 1.5,
   yeastOvernight: 0.08,
+  yeast48h: 0.03,
   yeast9h: 0.30,
   // Bumped from 0.7% so a 3h same-day dough actually proofs in 3 hours.
   yeast3h: 1.20,
@@ -79,6 +81,7 @@ export function useSettings() {
 export function yeastPctFor(settings: Settings, label: string): number {
   switch (label) {
     case 'Overnight': return settings.yeastOvernight;
+    case '48 hours': return settings.yeast48h;
     case '9 hours': return settings.yeast9h;
     case '3 hours': return settings.yeast3h;
     default: return settings.yeastOvernight;
