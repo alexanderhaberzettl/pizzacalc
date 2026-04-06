@@ -165,32 +165,61 @@ export interface NerdDoughResult extends DoughResult {
   wholeGrainPct: number;
 }
 
-export const SOURDOUGH_FERMENTATION_ESTIMATES = [
-  {
-    label: 'Cool & slow',
-    bulk: '12–16h bulk at 18–20°C',
-    proof: '2–4h proof at room temp',
-    note: 'Best flavor. Good if your kitchen is cool overnight.',
-  },
-  {
-    label: 'Room temp',
-    bulk: '4–8h bulk at 22–24°C',
-    proof: '1–2h proof at room temp',
-    note: 'Typical warm kitchen. Watch the dough, not the clock.',
-  },
-  {
-    label: 'Warm & fast',
-    bulk: '2–4h bulk at 26–28°C',
-    proof: '45–90min proof',
-    note: 'Active starter needed. Easy to over-proof — stay close.',
-  },
-  {
-    label: 'Cold retard',
-    bulk: '2–3h bulk at room temp, then 12–48h in fridge',
-    proof: '2–3h at room temp after fridge',
-    note: 'Most flexible. Shape before fridge or after — both work.',
-  },
-];
+export interface SourdoughEstimate {
+  label: string;
+  bulk: string;
+  proof: string;
+  note: string;
+}
+
+/**
+ * Returns fermentation time estimates adjusted for starter percentage.
+ * Baseline is 20%. Times scale inversely — more starter = faster ferment.
+ * Scale factor = 20 / starterPct, clamped to [0.5, 2.2].
+ */
+export function getSourdoughEstimates(starterPct: number): SourdoughEstimate[] {
+  const scale = Math.min(2.2, Math.max(0.5, 20 / starterPct));
+
+  // Scale a [lo, hi] hour range and format as "X–Yh"
+  const scaleHours = (lo: number, hi: number): string => {
+    const slo = Math.round(lo * scale * 2) / 2; // round to 0.5h
+    const shi = Math.round(hi * scale * 2) / 2;
+    const fmt = (h: number) => h < 1 ? `${Math.round(h * 60)}min` : Number.isInteger(h * 2) && !Number.isInteger(h) ? `${h}h` : `${Math.round(h)}h`;
+    return `${fmt(slo)}–${fmt(shi)}`;
+  };
+
+  // Initial bulk before fridge (for cold retard)
+  const coldBulkLo = Math.round(Math.max(0.75, 2 * scale) * 4) / 4;
+  const coldBulkHi = Math.round(Math.max(1.5, 3.5 * scale) * 4) / 4;
+  const coldBulkStr = `${coldBulkLo < 1 ? Math.round(coldBulkLo * 60) + 'min' : coldBulkLo + 'h'}–${coldBulkHi}h`;
+
+  return [
+    {
+      label: 'Cool & slow',
+      bulk: `${scaleHours(12, 16)} bulk at 18–20°C`,
+      proof: `${scaleHours(2, 4)} proof at room temp`,
+      note: 'Best flavor. Good if your kitchen is cool overnight.',
+    },
+    {
+      label: 'Room temp',
+      bulk: `${scaleHours(4, 8)} bulk at 22–24°C`,
+      proof: `${scaleHours(1, 2)} proof at room temp`,
+      note: 'Typical warm kitchen. Watch the dough, not the clock.',
+    },
+    {
+      label: 'Warm & fast',
+      bulk: `${scaleHours(2, 4)} bulk at 26–28°C`,
+      proof: `${scaleHours(0.75, 1.5)} proof`,
+      note: 'Easy to over-proof — stay close.',
+    },
+    {
+      label: 'Cold retard',
+      bulk: `${coldBulkStr} bulk at room temp, then 12–48h in fridge`,
+      proof: '2–3h at room temp after fridge',
+      note: 'Most flexible. Shape before fridge or after — both work.',
+    },
+  ];
+}
 
 function preFermentTimeHint(type: PreFermentType): string {
   switch (type) {

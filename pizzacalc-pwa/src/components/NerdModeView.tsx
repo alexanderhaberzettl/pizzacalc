@@ -4,9 +4,9 @@ import {
   formatGrams,
   fermentationHint,
   buildNerdShareText,
+  getSourdoughEstimates,
   PreFermentType,
   NerdDoughResult,
-  SOURDOUGH_FERMENTATION_ESTIMATES,
 } from '../lib/dough';
 
 // ─── Local helper types ───────────────────────────────────────────────────────
@@ -254,7 +254,7 @@ export default function NerdModeView() {
             Fermentation times for sourdough depend heavily on your starter's activity, temperature, and the season. The estimates below assume a healthy, active starter.
           </p>
           <div className="sourdough-estimates">
-            {SOURDOUGH_FERMENTATION_ESTIMATES.map(e => (
+            {getSourdoughEstimates(starterPct).map(e => (
               <div key={e.label} className="sourdough-estimate-row">
                 <div className="sourdough-estimate-label">{e.label}</div>
                 <div className="sourdough-estimate-times">
