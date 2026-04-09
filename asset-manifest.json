@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/pizzacalc/static/css/main.f9869548.css",
+    "main.js": "/pizzacalc/static/js/main.355f6338.js",
+    "static/js/488.b5b95059.chunk.js": "/pizzacalc/static/js/488.b5b95059.chunk.js",
+    "service-worker.js": "/pizzacalc/service-worker.js",
+    "index.html": "/pizzacalc/index.html",
+    "main.f9869548.css.map": "/pizzacalc/static/css/main.f9869548.css.map",
+    "main.355f6338.js.map": "/pizzacalc/static/js/main.355f6338.js.map",
+    "488.b5b95059.chunk.js.map": "/pizzacalc/static/js/488.b5b95059.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f9869548.css",
+    "static/js/main.355f6338.js"
+  ]
+}
