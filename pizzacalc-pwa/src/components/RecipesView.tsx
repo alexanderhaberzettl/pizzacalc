@@ -5,10 +5,11 @@ import { defaultSettings } from '../context/SettingsContext';
 const STEPS: string[] = [
   "Prepare the specified amount of water (30–35°C). Mix 3 tablespoons of it with the yeast in a small container and let it sit.",
   "Roughly mix the rest of the water with the flour. It doesn't need to be a homogeneous dough yet.",
-  "After 20 minutes, sprinkle the salt over the dough and add the yeast mixture. Wipe the yeast container with a piece of dough.",
+  "After 20 minutes, add the yeast mixture to the dough. Wipe the yeast container with a piece of dough.",
+  "Sprinkle the salt over the dough, making sure it does not touch the yeast directly.",
   "Knead the dough by hand or with a kitchen machine (at low speed) for five minutes until a homogeneous dough forms.",
   "Let the dough rest, well covered, for 30–60 minutes. After that time, stretch the dough: take the dough by the edge, pull it up, and before it tears, fold it onto the remaining piece. After 4–5 repetitions, the dough will no longer stretch.",
-  "Repeat step 5 another 1–2 times.",
+  "Repeat step 6 another 1–2 times.",
   "Let the dough rise in an airtight container in a cool place (18–20°C) for 12 hours. In a warmer place, it will rise correspondingly faster.",
   "Divide the dough into the number of pizzas you want.",
   "Form small balls and place them seam-side down in an oiled or floured container. It is important that it is airtight (Tupperware with a little oil works well).",
