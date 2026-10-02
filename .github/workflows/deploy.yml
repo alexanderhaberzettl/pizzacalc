@@ -4,18 +4,18 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
+# The site is served from the gh-pages branch, so the build is committed there.
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,18 +35,24 @@ jobs:
         working-directory: pizzacalc-pwa
         run: npm run build
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Check out gh-pages
+        uses: actions/checkout@v4
         with:
-          path: pizzacalc-pwa/build
+          ref: gh-pages
+          path: gh-pages
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publish build to gh-pages
+        working-directory: gh-pages
+        run: |
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -r ../pizzacalc-pwa/build/. .
+          touch .nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to deploy"
+          else
+            git commit -m "Deploy PWA (${GITHUB_SHA::7})"
+            git push origin gh-pages
+          fi
