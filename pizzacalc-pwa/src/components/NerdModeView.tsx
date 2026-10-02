@@ -382,7 +382,7 @@ export default function NerdModeView() {
               <h2>{pfResultTitle()}</h2>
               <Row label="Flour" value={formatGrams(result.preFerment.flour)} />
               <Row label="Water" value={formatGrams(result.preFerment.water)} />
-              <Row label="Yeast" value={formatGrams(result.preFerment.yeast)} />
+              <Row label="Yeast (instant dry)" value={formatGrams(result.preFerment.yeast)} />
               <p className="hint">{result.preFerment.fermentTimeHint}</p>
             </section>
           )}
@@ -405,7 +405,7 @@ export default function NerdModeView() {
             <Row label="Water" value={formatGrams(result.finalMix.water)} />
             <Row label="Salt" value={formatGrams(result.finalMix.salt)} />
             {result.finalMix.yeast != null && (
-              <Row label="Yeast" value={formatGrams(result.finalMix.yeast)} />
+              <Row label="Yeast (instant dry)" value={formatGrams(result.finalMix.yeast)} />
             )}
             {result.finalMix.oil != null && (
               <Row label="Olive Oil" value={formatGrams(result.finalMix.oil)} />
@@ -424,7 +424,7 @@ export default function NerdModeView() {
             <Row label="Flour" value={formatGrams(result.flour)} />
             <Row label="Water" value={formatGrams(result.water)} />
             <Row label="Salt" value={formatGrams(result.salt)} />
-            {!isSourdough && <Row label="Yeast" value={formatGrams(result.yeast)} />}
+            {!isSourdough && <Row label="Yeast (instant dry)" value={formatGrams(result.yeast)} />}
             {result.finalMix.starter != null && (
               <Row label="Starter" value={formatGrams(result.finalMix.starter)} />
             )}
@@ -442,7 +442,7 @@ export default function NerdModeView() {
             <Row label="Flour" value={formatGrams(result.flour / result.numBalls)} />
             <Row label="Water" value={formatGrams(result.water / result.numBalls)} />
             <Row label="Salt" value={formatGrams(result.salt / result.numBalls)} />
-            {!isSourdough && <Row label="Yeast" value={formatGrams(result.yeast / result.numBalls)} />}
+            {!isSourdough && <Row label="Yeast (instant dry)" value={formatGrams(result.yeast / result.numBalls)} />}
             {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil / result.numBalls)} />}
             {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar / result.numBalls)} />}
           </Collapsible>
@@ -455,7 +455,7 @@ export default function NerdModeView() {
           >
             <Row label="Hydration" value={`${Math.round(result.hydrationPct)}%`} />
             <Row label="Salt" value={`${result.saltPct.toFixed(2)}%`} />
-            {!isSourdough && <Row label="Yeast" value={`${result.yeastPct.toFixed(3)}%`} />}
+            {!isSourdough && <Row label="Yeast (instant dry)" value={`${result.yeastPct.toFixed(3)}%`} />}
             {result.preFerment && (
               <Row label={`${pfLabel(preFermentType)} flour`} value={`${preFermentFlourPct}%`} />
             )}

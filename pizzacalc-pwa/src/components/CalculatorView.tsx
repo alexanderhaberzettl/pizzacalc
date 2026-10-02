@@ -220,7 +220,7 @@ export default function CalculatorView() {
             <Row label="Flour" value={formatGrams(result.flour)} />
             <Row label="Water" value={formatGrams(result.water)} />
             <Row label="Salt" value={formatGrams(result.salt)} />
-            <Row label="Yeast" value={formatGrams(result.yeast)} />
+            <Row label="Yeast (instant dry)" value={formatGrams(result.yeast)} />
             {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil)} />}
             {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar)} />}
             <Row label="Total" value={formatGrams(result.totalWeight)} bold />
@@ -234,7 +234,7 @@ export default function CalculatorView() {
             <Row label="Flour" value={formatGrams(result.flour / result.numBalls)} />
             <Row label="Water" value={formatGrams(result.water / result.numBalls)} />
             <Row label="Salt" value={formatGrams(result.salt / result.numBalls)} />
-            <Row label="Yeast" value={formatGrams(result.yeast / result.numBalls)} />
+            <Row label="Yeast (instant dry)" value={formatGrams(result.yeast / result.numBalls)} />
             {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil / result.numBalls)} />}
             {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar / result.numBalls)} />}
           </Collapsible>
@@ -246,7 +246,7 @@ export default function CalculatorView() {
           >
             <Row label="Hydration" value={`${Math.round(result.hydrationPct)}%`} />
             <Row label="Salt" value={`${result.saltPct.toFixed(2)}%`} />
-            <Row label="Yeast" value={`${result.yeastPct.toFixed(3)}%`} />
+            <Row label="Yeast (instant dry)" value={`${result.yeastPct.toFixed(3)}%`} />
           </Collapsible>
 
           <button className="calc-btn secondary" onClick={share}>
