@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import {
   calculateNerdDough,
   formatGrams,
-  FRESH_YEAST_FACTOR,
+  YEAST_TYPE_LABEL,
+  yeastForType,
+  YeastType,
   buildNerdShareText,
   yeastPctForConditions,
   equivalentHoursAt20,
@@ -18,6 +20,10 @@ import {
 type LeaveningType = 'yeast' | 'sourdough';
 
 const HYDRATIONS = [0.60, 0.65, 0.70, 0.75];
+const YEAST_TYPES: { value: YeastType; label: string }[] = [
+  { value: 'instant', label: 'Instant dry' },
+  { value: 'fresh', label: 'Fresh' },
+];
 const PRE_FERMENT_OPTIONS: PreFermentType[] = ['none', 'poolish', 'biga', 'tiga'];
 
 // ─── Default local settings ───────────────────────────────────────────────────
@@ -113,6 +119,7 @@ export default function NerdModeView() {
   const [amountOfPizzas, setAmountOfPizzas] = useState(2);
   const [hydration, setHydration] = useState(0.65);
   const [leaveningType, setLeaveningType] = useState<LeaveningType>('yeast');
+  const [yeastType, setYeastType] = useState<YeastType>('instant');
   const [preFermentType, setPreFermentType] = useState<PreFermentType>('none');
   const [preFermentFlourPct, setPreFermentFlourPct] = useState(20);
   const [starterPct, setStarterPct] = useState(20);
@@ -125,6 +132,7 @@ export default function NerdModeView() {
   const [bakersOpen, setBakersOpen] = useState(false);
 
   const isSourdough = leaveningType === 'sourdough';
+  const yeastRowLabel = YEAST_TYPE_LABEL[yeastType];
 
   const conditions = {
     roomHours: temps.roomHours,
@@ -175,7 +183,7 @@ export default function NerdModeView() {
     const text = buildNerdShareText(result, [
       ...(isSourdough ? [] : [`Fermentation: ${result.yeastLabel}`]),
       `Water temperature: ${waterTempLabel} (target dough ${temps.targetDoughC}°C)`,
-    ]);
+    ], yeastType);
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Pizzacalc Nerd Mode Recipe', text });
@@ -284,9 +292,19 @@ export default function NerdModeView() {
           )}
           <SliderRow label="Yeast adjustment" value={temps.yeastFactor} min={0.5} max={2} step={0.05} suffix="×" decimals={2}
             onChange={v => updateTemps({ yeastFactor: v })} />
+          <label className="card-label" style={{ marginTop: 16 }}>Yeast type</label>
+          <div className="segmented">
+            {YEAST_TYPES.map(t => (
+              <button
+                key={t.value}
+                className={yeastType === t.value ? 'seg active' : 'seg'}
+                onClick={() => setYeastType(t.value)}
+              >{t.label}</button>
+            ))}
+          </div>
           <div className="row row-bold" style={{ marginTop: 8 }}>
-            <span>Yeast (instant dry)</span>
-            <span>{modelYeastPct.toFixed(3)}% of flour</span>
+            <span>{yeastRowLabel}</span>
+            <span>{yeastForType(modelYeastPct, yeastType).toFixed(3)}% of flour</span>
           </div>
           <p className="hint">
             Room time includes bulk and ball rest. Equivalent to {equivHours.toFixed(1)}h at 20°C — yeast activity
@@ -444,8 +462,7 @@ export default function NerdModeView() {
               <h2>{pfResultTitle()}</h2>
               <Row label="Flour" value={formatGrams(result.preFerment.flour)} />
               <Row label="Water" value={formatGrams(result.preFerment.water)} />
-              <Row label="Yeast (instant dry)" value={formatGrams(result.preFerment.yeast)} />
-              <Row label="Yeast (fresh)" value={formatGrams(result.preFerment.yeast * FRESH_YEAST_FACTOR)} />
+              <Row label={yeastRowLabel} value={formatGrams(yeastForType(result.preFerment.yeast, yeastType))} />
               <p className="hint">{result.preFerment.fermentTimeHint}</p>
             </section>
           )}
@@ -468,10 +485,7 @@ export default function NerdModeView() {
             <Row label="Water" value={formatGrams(result.finalMix.water)} />
             <Row label="Salt" value={formatGrams(result.finalMix.salt)} />
             {result.finalMix.yeast != null && !result.preFermentCoversYeast && (
-              <>
-                <Row label="Yeast (instant dry)" value={formatGrams(result.finalMix.yeast)} />
-                <Row label="Yeast (fresh)" value={formatGrams(result.finalMix.yeast * FRESH_YEAST_FACTOR)} />
-              </>
+              <Row label={yeastRowLabel} value={formatGrams(yeastForType(result.finalMix.yeast, yeastType))} />
             )}
             {result.preFermentCoversYeast && (
               <p className="hint">The pre-ferment already contains at least as much yeast as this fermentation needs, so the final mix gets none. Consider a smaller pre-ferment or a shorter fermentation.</p>
@@ -501,8 +515,7 @@ export default function NerdModeView() {
             <Row label="Flour" value={formatGrams(result.flour)} />
             <Row label="Water" value={formatGrams(result.water)} />
             <Row label="Salt" value={formatGrams(result.salt)} />
-            {!isSourdough && <Row label="Yeast (instant dry)" value={formatGrams(result.yeast)} />}
-            {!isSourdough && <Row label="Yeast (fresh)" value={formatGrams(result.yeast * FRESH_YEAST_FACTOR)} />}
+            {!isSourdough && <Row label={yeastRowLabel} value={formatGrams(yeastForType(result.yeast, yeastType))} />}
             {result.finalMix.starter != null && (
               <Row label="Starter" value={formatGrams(result.finalMix.starter)} />
             )}
@@ -520,8 +533,7 @@ export default function NerdModeView() {
             <Row label="Flour" value={formatGrams(result.flour / result.numBalls)} />
             <Row label="Water" value={formatGrams(result.water / result.numBalls)} />
             <Row label="Salt" value={formatGrams(result.salt / result.numBalls)} />
-            {!isSourdough && <Row label="Yeast (instant dry)" value={formatGrams(result.yeast / result.numBalls)} />}
-            {!isSourdough && <Row label="Yeast (fresh)" value={formatGrams((result.yeast / result.numBalls) * FRESH_YEAST_FACTOR)} />}
+            {!isSourdough && <Row label={yeastRowLabel} value={formatGrams(yeastForType(result.yeast / result.numBalls, yeastType))} />}
             {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil / result.numBalls)} />}
             {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar / result.numBalls)} />}
           </Collapsible>
@@ -534,7 +546,7 @@ export default function NerdModeView() {
           >
             <Row label="Hydration" value={`${Math.round(result.hydrationPct)}%`} />
             <Row label="Salt" value={`${result.saltPct.toFixed(2)}%`} />
-            {!isSourdough && <Row label="Yeast (instant dry)" value={`${result.yeastPct.toFixed(3)}%`} />}
+            {!isSourdough && <Row label={yeastRowLabel} value={`${yeastForType(result.yeastPct, yeastType).toFixed(3)}%`} />}
             {result.preFerment && (
               <Row label={`${pfLabel(preFermentType)} flour`} value={`${preFermentFlourPct}%`} />
             )}

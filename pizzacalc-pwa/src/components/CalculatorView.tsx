@@ -3,7 +3,9 @@ import { useSettings, yeastPctFor } from '../context/SettingsContext';
 import {
   calculateDough,
   formatGrams,
-  FRESH_YEAST_FACTOR,
+  YEAST_TYPE_LABEL,
+  yeastForType,
+  YeastType,
   fermentationHint,
   buildShareText,
   PRESETS,
@@ -16,6 +18,10 @@ import {
 } from '../lib/dough';
 
 const HYDRATIONS = [0.60, 0.65, 0.70, 0.75];
+const YEAST_TYPES: { value: YeastType; label: string }[] = [
+  { value: 'instant', label: 'Instant dry' },
+  { value: 'fresh', label: 'Fresh' },
+];
 const YEAST_OPTIONS: FermentationLabel[] = ['48 hours', 'Overnight', '9 hours', '3 hours'];
 
 export default function CalculatorView() {
@@ -79,9 +85,11 @@ export default function CalculatorView() {
       ? `${appliedPreset.name} · customized`
       : appliedPreset.name;
 
+  const yeastRowLabel = YEAST_TYPE_LABEL[settings.yeastType];
+
   const share = async () => {
     if (!result) return;
-    const text = buildShareText(result);
+    const text = buildShareText(result, settings.yeastType);
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Pizzacalc Recipe', text });
@@ -123,6 +131,16 @@ export default function CalculatorView() {
           ))}
         </div>
         <p className="hint">{fermentationHint(yeastLabel)}</p>
+        <label className="card-label" style={{ marginTop: 12 }}>Yeast type</label>
+        <div className="segmented">
+          {YEAST_TYPES.map(t => (
+            <button
+              key={t.value}
+              className={settings.yeastType === t.value ? 'seg active' : 'seg'}
+              onClick={() => updateSettings({ yeastType: t.value })}
+            >{t.label}</button>
+          ))}
+        </div>
       </section>
 
       <section className="card">
@@ -228,8 +246,7 @@ export default function CalculatorView() {
             <Row label="Flour" value={formatGrams(result.flour)} />
             <Row label="Water" value={formatGrams(result.water)} />
             <Row label="Salt" value={formatGrams(result.salt)} />
-            <Row label="Yeast (instant dry)" value={formatGrams(result.yeast)} />
-            <Row label="Yeast (fresh)" value={formatGrams(result.yeast * FRESH_YEAST_FACTOR)} />
+            <Row label={yeastRowLabel} value={formatGrams(yeastForType(result.yeast, settings.yeastType))} />
             {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil)} />}
             {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar)} />}
             <Row label="Total" value={formatGrams(result.totalWeight)} bold />
@@ -263,8 +280,7 @@ export default function CalculatorView() {
             <Row label="Flour" value={formatGrams(result.flour / result.numBalls)} />
             <Row label="Water" value={formatGrams(result.water / result.numBalls)} />
             <Row label="Salt" value={formatGrams(result.salt / result.numBalls)} />
-            <Row label="Yeast (instant dry)" value={formatGrams(result.yeast / result.numBalls)} />
-            <Row label="Yeast (fresh)" value={formatGrams((result.yeast / result.numBalls) * FRESH_YEAST_FACTOR)} />
+            <Row label={yeastRowLabel} value={formatGrams(yeastForType(result.yeast / result.numBalls, settings.yeastType))} />
             {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil / result.numBalls)} />}
             {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar / result.numBalls)} />}
           </Collapsible>
@@ -276,7 +292,7 @@ export default function CalculatorView() {
           >
             <Row label="Hydration" value={`${Math.round(result.hydrationPct)}%`} />
             <Row label="Salt" value={`${result.saltPct.toFixed(2)}%`} />
-            <Row label="Yeast (instant dry)" value={`${result.yeastPct.toFixed(3)}%`} />
+            <Row label={yeastRowLabel} value={`${yeastForType(result.yeastPct, settings.yeastType).toFixed(3)}%`} />
           </Collapsible>
 
           <button className="calc-btn secondary" onClick={share}>

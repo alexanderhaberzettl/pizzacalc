@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { YeastType } from '../lib/dough';
 
 export interface Settings {
   ballWeight: number;             // grams per dough ball
@@ -11,6 +12,7 @@ export interface Settings {
   yeast48h: number;               // % of flour
   yeast9h: number;                // % of flour
   yeast3h: number;                // % of flour
+  yeastType: YeastType;           // which yeast results are shown in
 }
 
 export const defaultSettings: Settings = {
@@ -28,6 +30,7 @@ export const defaultSettings: Settings = {
   yeast9h: 0.20,
   // Bumped from 0.7% so a 3h same-day dough actually proofs in 3 hours.
   yeast3h: 1.20,
+  yeastType: 'instant',
 };
 
 interface SettingsContextType {
