@@ -9,16 +9,20 @@ import {
   PRESETS,
   DoughResult,
   PizzaPreset,
+  DoughMethod,
+  FermentationLabel,
+  FERMENTATION_SCHEDULES,
+  buildMethodSteps,
 } from '../lib/dough';
 
 const HYDRATIONS = [0.60, 0.65, 0.70, 0.75];
-const YEAST_OPTIONS = ['48 hours', 'Overnight', '9 hours', '3 hours'] as const;
+const YEAST_OPTIONS: FermentationLabel[] = ['48 hours', 'Overnight', '9 hours', '3 hours'];
 
 export default function CalculatorView() {
   const { settings, updateSettings, resetToDefault } = useSettings();
   const [amountOfPizzas, setAmountOfPizzas] = useState(1);
   const [hydration, setHydration] = useState(0.65);
-  const [yeastLabel, setYeastLabel] = useState<typeof YEAST_OPTIONS[number]>('Overnight');
+  const [yeastLabel, setYeastLabel] = useState<FermentationLabel>('Overnight');
   const [result, setResult] = useState<DoughResult | null>(null);
   const [showPresets, setShowPresets] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -26,8 +30,11 @@ export default function CalculatorView() {
   const [bakersOpen, setBakersOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [appliedPreset, setAppliedPreset] = useState<PizzaPreset | null>(null);
+  const [methodOpen, setMethodOpen] = useState(false);
+  const [resultMethod, setResultMethod] = useState<DoughMethod>('kneaded');
 
   const calculate = () => {
+    setResultMethod(appliedPreset?.method ?? 'kneaded');
     setResult(calculateDough({
       ballWeight: settings.ballWeight,
       numBalls: amountOfPizzas,
@@ -162,7 +169,7 @@ export default function CalculatorView() {
           <span className="settings-section-label">Salt</span>
           <SliderRow label="Salt" value={settings.saltRatio} min={1.0} max={3.5} step={0.1} suffix="% of flour" decimals={1}
             onChange={v => updateSettings({ saltRatio: v })} />
-          <p className="hint" style={{ marginTop: 4 }}>Typical range: 2.0–2.8% for most styles.</p>
+          <p className="hint" style={{ marginTop: 4 }}>Typical range: 2.0–3.0% for most styles.</p>
         </div>
 
         <div className="settings-section">
@@ -196,7 +203,7 @@ export default function CalculatorView() {
 
         <div className="settings-section">
           <span className="settings-section-label">Yeast — % of flour, instant dry</span>
-          <SliderRow label="48 hours" value={settings.yeast48h} min={0.01} max={0.10} step={0.005} suffix="%" decimals={3}
+          <SliderRow label="48 hours" value={settings.yeast48h} min={0.05} max={0.50} step={0.01} suffix="%" decimals={2}
             onChange={v => updateSettings({ yeast48h: v })} />
           <SliderRow label="Overnight" value={settings.yeastOvernight} min={0.03} max={0.30} step={0.01} suffix="%" decimals={3}
             onChange={v => updateSettings({ yeastOvernight: v })} />
@@ -227,6 +234,26 @@ export default function CalculatorView() {
             {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar)} />}
             <Row label="Total" value={formatGrams(result.totalWeight)} bold />
           </section>
+
+          <section className="card">
+            <h2>Temperatures</h2>
+            <Row label="Water" value={FERMENTATION_SCHEDULES[yeastLabelOf(result)].waterTemp} />
+            <Row label="Bulk fermentation" value={FERMENTATION_SCHEDULES[yeastLabelOf(result)].bulkTemp} />
+            <Row label="Ball rest" value={`${FERMENTATION_SCHEDULES[yeastLabelOf(result)].ballRest} at room temp`} />
+          </section>
+
+          <Collapsible
+            title="Method"
+            open={methodOpen}
+            onToggle={() => setMethodOpen(o => !o)}
+          >
+            {resultMethod === 'no-knead' && !isLongFerment(yeastLabelOf(result)) && (
+              <p className="hint">No-knead dough needs a long fermentation to develop gluten — overnight or longer works best.</p>
+            )}
+            <ol className="recipe-steps">
+              {buildMethodSteps(yeastLabelOf(result), resultMethod).map((step, i) => <li key={i}>{step}</li>)}
+            </ol>
+          </Collapsible>
 
           <Collapsible
             title={`Per Ball (${Math.round(result.ballWeight)}g × ${result.numBalls})`}
@@ -276,6 +303,14 @@ export default function CalculatorView() {
       )}
     </div>
   );
+}
+
+function yeastLabelOf(result: DoughResult): FermentationLabel {
+  return result.yeastLabel as FermentationLabel;
+}
+
+function isLongFerment(label: FermentationLabel): boolean {
+  return label === 'Overnight' || label === '48 hours';
 }
 
 function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {

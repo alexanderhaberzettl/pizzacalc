@@ -1,20 +1,19 @@
-import React from 'react';
-import { PRESETS, PizzaPreset, fermentationHint } from '../lib/dough';
+import React, { useState } from 'react';
+import {
+  PRESETS,
+  PizzaPreset,
+  fermentationHint,
+  buildMethodSteps,
+  FERMENTATION_SCHEDULES,
+  FermentationLabel,
+  DoughMethod,
+} from '../lib/dough';
 import { defaultSettings } from '../context/SettingsContext';
 
-const STEPS: string[] = [
-  "Prepare the specified amount of water (30–35°C). Mix 3 tablespoons of it with the yeast in a small container and let it sit.",
-  "Roughly mix the rest of the water with the flour. It doesn't need to be a homogeneous dough yet.",
-  "After 20 minutes, add the yeast mixture to the dough. Wipe the yeast container with a piece of dough.",
-  "Sprinkle the salt over the dough, making sure it does not touch the yeast directly.",
-  "Knead the dough by hand or with a kitchen machine (at low speed) for five minutes until a homogeneous dough forms.",
-  "Let the dough rest, well covered, for 30–60 minutes. After that time, stretch the dough: take the dough by the edge, pull it up, and before it tears, fold it onto the remaining piece. After 4–5 repetitions, the dough will no longer stretch.",
-  "Repeat step 6 another 1–2 times.",
-  "Let the dough rise in an airtight container in a cool place (18–20°C) for 12 hours. In a warmer place, it will rise correspondingly faster.",
-  "Divide the dough into the number of pizzas you want.",
-  "Form small balls and place them seam-side down in an oiled or floured container. It is important that it is airtight (Tupperware with a little oil works well).",
-  "After another 2–3 hours of resting at room temperature, start baking. Alternatively, the dough can be refrigerated for up to two days or frozen. Always warm dough at room temperature for 2–3 hours before baking.",
-  "Take a ball and shape your pizza with plenty of flour or semolina flour.",
+const FERMENTATION_OPTIONS: FermentationLabel[] = ['48 hours', 'Overnight', '9 hours', '3 hours'];
+const METHOD_OPTIONS: { value: DoughMethod; label: string }[] = [
+  { value: 'kneaded', label: 'Kneaded' },
+  { value: 'no-knead', label: 'No-knead' },
 ];
 
 function StatPill({ label, value }: { label: string; value: string }) {
@@ -40,6 +39,8 @@ function PresetCard({ preset }: { preset: PizzaPreset }) {
         <StatPill label="Ball weight" value={`${preset.ballWeight}g`} />
         <StatPill label="Salt" value={`${preset.saltPct}%`} />
         <StatPill label="Fermentation" value={preset.yeastLabel} />
+        <StatPill label="Ferment temp" value={FERMENTATION_SCHEDULES[preset.yeastLabel].bulkTemp} />
+        {preset.method === 'no-knead' && <StatPill label="Method" value="No-knead" />}
         {preset.includeOil && <StatPill label="Olive oil" value={`${preset.oilPct}%`} />}
         {preset.includeSugar && <StatPill label="Sugar" value={`${preset.sugarPct}%`} />}
       </div>
@@ -73,14 +74,51 @@ function DefaultSettingsCard() {
 }
 
 export default function RecipesView() {
+  const [fermentation, setFermentation] = useState<FermentationLabel>('Overnight');
+  const [method, setMethod] = useState<DoughMethod>('kneaded');
+  const schedule = FERMENTATION_SCHEDULES[fermentation];
+  const shortNoKnead = method === 'no-knead' && (fermentation === '3 hours' || fermentation === '9 hours');
+
   return (
     <div className="view">
       <h1>Recipe</h1>
 
       <h2 style={{ marginBottom: 12 }}>How to make the dough</h2>
       <section className="card">
+        <label className="card-label">Fermentation</label>
+        <div className="segmented">
+          {FERMENTATION_OPTIONS.map(t => (
+            <button
+              key={t}
+              className={fermentation === t ? 'seg active' : 'seg'}
+              onClick={() => setFermentation(t)}
+            >{t}</button>
+          ))}
+        </div>
+        <label className="card-label" style={{ marginTop: 12 }}>Method</label>
+        <div className="segmented">
+          {METHOD_OPTIONS.map(m => (
+            <button
+              key={m.value}
+              className={method === m.value ? 'seg active' : 'seg'}
+              onClick={() => setMethod(m.value)}
+            >{m.label}</button>
+          ))}
+        </div>
+        <div className="stat-pills" style={{ marginTop: 12 }}>
+          <StatPill label="Water" value={schedule.waterTemp} />
+          <StatPill label="Bulk" value={schedule.bulkTemp} />
+          <StatPill label="Ball rest" value={schedule.ballRest} />
+        </div>
+        {shortNoKnead && (
+          <p className="hint" style={{ marginTop: 8 }}>
+            No-knead dough needs a long fermentation to develop gluten — overnight or longer works best.
+          </p>
+        )}
+      </section>
+      <section className="card">
         <ol className="recipe-steps">
-          {STEPS.map((step, i) => <li key={i}>{step}</li>)}
+          {buildMethodSteps(fermentation, method).map((step, i) => <li key={i}>{step}</li>)}
         </ol>
       </section>
 
