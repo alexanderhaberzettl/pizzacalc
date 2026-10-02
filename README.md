@@ -22,7 +22,7 @@ Give it a ball weight and a number of pizzas; it gives you flour, water, salt, y
 - **Hydration options** — 60%, 65%, 70%, 75%
 - **Optional oil & sugar** — toggleable with adjustable percentages
 - **Per-ball + total batch** results, plus the raw baker's percentages
-- **Instant dry and fresh yeast** — both amounts shown in every result
+- **Instant dry or fresh yeast** — pick your yeast type; results are shown for that yeast
 - **Nerd Mode** — pre-ferments (poolish, biga, tiga), sourdough, whole grain, yeast calculated from time and temperature (room + fridge), and a water temperature calculator
 - **Copy/share recipe** — Web Share API with clipboard fallback, includes fermentation notes
 - **Persistent settings** — saved in `localStorage`
@@ -53,7 +53,7 @@ Default ratios (all % of flour):
 | Yeast — 9 hours | 0.20% | 0.10–0.80% |
 | Yeast — 3 hours | 1.20% | 0.50–2.50% |
 
-Yeast values are for **instant dry yeast**. For fresh yeast, multiply by ~3 (the app shows both).
+Yeast values are for **instant dry yeast**. For fresh yeast, multiply by ~3 (the app converts automatically when you pick fresh yeast).
 
 ### Nerd Mode: yeast from time and temperature
 
@@ -104,6 +104,10 @@ pizzacalc-pwa/
 ---
 
 ## Changelog
+
+### 1.3.1
+
+- Choose the yeast type (instant dry or fresh); results, baker's percentages and the share text show only the chosen yeast. Previously both were listed one below the other, which looked like both go into the dough.
 
 ### 1.3.0
 

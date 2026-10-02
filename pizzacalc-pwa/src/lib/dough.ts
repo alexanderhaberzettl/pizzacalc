@@ -66,9 +66,21 @@ export function calculateDough(input: DoughInput): DoughResult {
 /** Fresh yeast weighs roughly 3x the equivalent amount of instant dry yeast */
 export const FRESH_YEAST_FACTOR = 3;
 
-/** Formats an instant dry yeast amount with its fresh yeast equivalent */
-export function formatYeast(instantDry: number): string {
-  return `${formatGrams(instantDry)} instant dry (or ${formatGrams(instantDry * FRESH_YEAST_FACTOR)} fresh)`;
+export type YeastType = 'instant' | 'fresh';
+
+export const YEAST_TYPE_LABEL: Record<YeastType, string> = {
+  instant: 'Yeast (instant dry)',
+  fresh: 'Yeast (fresh)',
+};
+
+/** All calculations work in instant dry yeast; converts to the chosen type. */
+export function yeastForType(instantDry: number, type: YeastType): number {
+  return type === 'fresh' ? instantDry * FRESH_YEAST_FACTOR : instantDry;
+}
+
+/** Formats an instant dry yeast amount as the chosen yeast type */
+export function formatYeast(instantDry: number, type: YeastType): string {
+  return `${formatGrams(yeastForType(instantDry, type))} ${type === 'fresh' ? 'fresh' : 'instant dry'}`;
 }
 
 /** Formats grams: 3 decimals under 1g, 1 decimal under 10g, integer above. */
@@ -471,7 +483,11 @@ export function calculateNerdDough(input: NerdDoughInput): NerdDoughResult {
   };
 }
 
-export function buildNerdShareText(r: NerdDoughResult, temperatureLines: string[] = []): string {
+export function buildNerdShareText(
+  r: NerdDoughResult,
+  temperatureLines: string[] = [],
+  yeastType: YeastType = 'instant',
+): string {
   const lines = [
     `Pizzacalc Nerd Mode — ${r.numBalls} × ${Math.round(r.ballWeight)}g`,
     `Hydration ${Math.round(r.hydrationPct)}% · Salt ${r.saltPct.toFixed(1)}%`,
@@ -486,7 +502,7 @@ export function buildNerdShareText(r: NerdDoughResult, temperatureLines: string[
     lines.push(`── ${pfType} ──`);
     lines.push(`Flour: ${formatGrams(r.preFerment.flour)}`);
     lines.push(`Water: ${formatGrams(r.preFerment.water)}`);
-    lines.push(`Yeast: ${formatYeast(r.preFerment.yeast)}`);
+    lines.push(`Yeast: ${formatYeast(r.preFerment.yeast, yeastType)}`);
     lines.push(r.preFerment.fermentTimeHint);
     lines.push('');
   }
@@ -504,7 +520,7 @@ export function buildNerdShareText(r: NerdDoughResult, temperatureLines: string[
   if (r.finalMix.yeast != null) {
     lines.push(r.preFermentCoversYeast
       ? 'Yeast: none — the pre-ferment already has enough'
-      : `Yeast: ${formatYeast(r.finalMix.yeast)}`);
+      : `Yeast: ${formatYeast(r.finalMix.yeast, yeastType)}`);
   }
   if (r.finalMix.oil != null) lines.push(`Oil:   ${formatGrams(r.finalMix.oil)}`);
   if (r.finalMix.sugar != null) lines.push(`Sugar: ${formatGrams(r.finalMix.sugar)}`);
@@ -514,7 +530,7 @@ export function buildNerdShareText(r: NerdDoughResult, temperatureLines: string[
   lines.push(`Flour: ${formatGrams(r.flour)}`);
   lines.push(`Water: ${formatGrams(r.water)}`);
   lines.push(`Salt:  ${formatGrams(r.salt)}`);
-  if (r.finalMix.yeast != null) lines.push(`Yeast: ${formatYeast(r.yeast)}`);
+  if (r.finalMix.yeast != null) lines.push(`Yeast: ${formatYeast(r.yeast, yeastType)}`);
   if (r.oil != null) lines.push(`Oil:   ${formatGrams(r.oil)}`);
   if (r.sugar != null) lines.push(`Sugar: ${formatGrams(r.sugar)}`);
   lines.push(`Total: ${formatGrams(r.totalWeight)}`);
@@ -528,10 +544,10 @@ export function buildNerdShareText(r: NerdDoughResult, temperatureLines: string[
   return lines.join('\n');
 }
 
-export function buildShareText(r: DoughResult): string {
+export function buildShareText(r: DoughResult, yeastType: YeastType = 'instant'): string {
   const lines = [
     `Pizzacalc — ${r.numBalls} × ${Math.round(r.ballWeight)}g`,
-    `Hydration ${Math.round(r.hydrationPct)}% · Salt ${r.saltPct.toFixed(1)}% · Yeast ${r.yeastPct.toFixed(3)}%`,
+    `Hydration ${Math.round(r.hydrationPct)}% · Salt ${r.saltPct.toFixed(1)}% · Yeast ${yeastForType(r.yeastPct, yeastType).toFixed(3)}% ${yeastType === 'fresh' ? 'fresh' : 'instant dry'}`,
     `Fermentation: ${r.yeastLabel} — ${fermentationHint(r.yeastLabel)}`,
     ...(r.yeastLabel in FERMENTATION_SCHEDULES
       ? [`Water temperature: ${FERMENTATION_SCHEDULES[r.yeastLabel as FermentationLabel].waterTemp}`]
@@ -540,7 +556,7 @@ export function buildShareText(r: DoughResult): string {
     `Flour: ${formatGrams(r.flour)}`,
     `Water: ${formatGrams(r.water)}`,
     `Salt:  ${formatGrams(r.salt)}`,
-    `Yeast: ${formatYeast(r.yeast)}`,
+    `Yeast: ${formatYeast(r.yeast, yeastType)}`,
   ];
   if (r.oil != null) lines.push(`Oil:   ${formatGrams(r.oil)}`);
   if (r.sugar != null) lines.push(`Sugar: ${formatGrams(r.sugar)}`);

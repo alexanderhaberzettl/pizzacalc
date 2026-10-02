@@ -5,6 +5,8 @@ import {
   yeastActivity,
   waterTempFor,
   buildMethodSteps,
+  buildShareText,
+  calculateDough,
   NerdDoughInput,
 } from './dough';
 
@@ -82,5 +84,19 @@ describe('method steps', () => {
 
   it('mentions the fridge for the 48 hour schedule', () => {
     expect(buildMethodSteps('48 hours', 'kneaded').join(' ')).toMatch(/fridge/);
+  });
+});
+
+describe('yeast type', () => {
+  const r = calculateDough({
+    ballWeight: 250, numBalls: 4, hydration: 0.65, saltPct: 2.5, yeastPct: 0.1,
+    oilPct: null, sugarPct: null, yeastLabel: 'Overnight',
+  });
+
+  it('shares only the chosen yeast type', () => {
+    const fresh = buildShareText(r, 'fresh');
+    expect(fresh).toMatch(/Yeast: [\d.]+ g fresh/);
+    expect(fresh).not.toMatch(/instant dry/);
+    expect(buildShareText(r, 'instant')).not.toMatch(/fresh/);
   });
 });
