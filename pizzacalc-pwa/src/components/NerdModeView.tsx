@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   calculateNerdDough,
   formatGrams,
+  FRESH_YEAST_FACTOR,
   fermentationHint,
   buildNerdShareText,
   getSourdoughEstimates,
@@ -383,6 +384,7 @@ export default function NerdModeView() {
               <Row label="Flour" value={formatGrams(result.preFerment.flour)} />
               <Row label="Water" value={formatGrams(result.preFerment.water)} />
               <Row label="Yeast (instant dry)" value={formatGrams(result.preFerment.yeast)} />
+              <Row label="Yeast (fresh)" value={formatGrams(result.preFerment.yeast * FRESH_YEAST_FACTOR)} />
               <p className="hint">{result.preFerment.fermentTimeHint}</p>
             </section>
           )}
@@ -405,7 +407,10 @@ export default function NerdModeView() {
             <Row label="Water" value={formatGrams(result.finalMix.water)} />
             <Row label="Salt" value={formatGrams(result.finalMix.salt)} />
             {result.finalMix.yeast != null && (
-              <Row label="Yeast (instant dry)" value={formatGrams(result.finalMix.yeast)} />
+              <>
+                <Row label="Yeast (instant dry)" value={formatGrams(result.finalMix.yeast)} />
+                <Row label="Yeast (fresh)" value={formatGrams(result.finalMix.yeast * FRESH_YEAST_FACTOR)} />
+              </>
             )}
             {result.finalMix.oil != null && (
               <Row label="Olive Oil" value={formatGrams(result.finalMix.oil)} />
@@ -425,6 +430,7 @@ export default function NerdModeView() {
             <Row label="Water" value={formatGrams(result.water)} />
             <Row label="Salt" value={formatGrams(result.salt)} />
             {!isSourdough && <Row label="Yeast (instant dry)" value={formatGrams(result.yeast)} />}
+            {!isSourdough && <Row label="Yeast (fresh)" value={formatGrams(result.yeast * FRESH_YEAST_FACTOR)} />}
             {result.finalMix.starter != null && (
               <Row label="Starter" value={formatGrams(result.finalMix.starter)} />
             )}
@@ -443,6 +449,7 @@ export default function NerdModeView() {
             <Row label="Water" value={formatGrams(result.water / result.numBalls)} />
             <Row label="Salt" value={formatGrams(result.salt / result.numBalls)} />
             {!isSourdough && <Row label="Yeast (instant dry)" value={formatGrams(result.yeast / result.numBalls)} />}
+            {!isSourdough && <Row label="Yeast (fresh)" value={formatGrams((result.yeast / result.numBalls) * FRESH_YEAST_FACTOR)} />}
             {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil / result.numBalls)} />}
             {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar / result.numBalls)} />}
           </Collapsible>

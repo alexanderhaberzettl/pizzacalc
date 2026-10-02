@@ -63,6 +63,14 @@ export function calculateDough(input: DoughInput): DoughResult {
   };
 }
 
+/** Fresh yeast weighs roughly 3x the equivalent amount of instant dry yeast */
+export const FRESH_YEAST_FACTOR = 3;
+
+/** Formats an instant dry yeast amount with its fresh yeast equivalent */
+export function formatYeast(instantDry: number): string {
+  return `${formatGrams(instantDry)} instant dry (or ${formatGrams(instantDry * FRESH_YEAST_FACTOR)} fresh)`;
+}
+
 /** Formats grams: 3 decimals under 1g, 1 decimal under 10g, integer above. */
 export function formatGrams(value: number): string {
   if (value < 1) return `${value.toFixed(3)} g`;
@@ -314,7 +322,7 @@ export function buildNerdShareText(r: NerdDoughResult): string {
     lines.push(`── ${pfType} ──`);
     lines.push(`Flour: ${formatGrams(r.preFerment.flour)}`);
     lines.push(`Water: ${formatGrams(r.preFerment.water)}`);
-    lines.push(`Yeast: ${formatGrams(r.preFerment.yeast)}`);
+    lines.push(`Yeast: ${formatYeast(r.preFerment.yeast)}`);
     lines.push(r.preFerment.fermentTimeHint);
     lines.push('');
   }
@@ -329,7 +337,7 @@ export function buildNerdShareText(r: NerdDoughResult): string {
   lines.push(`Flour: ${formatGrams(r.finalMix.flour)}`);
   lines.push(`Water: ${formatGrams(r.finalMix.water)}`);
   lines.push(`Salt:  ${formatGrams(r.finalMix.salt)}`);
-  if (r.finalMix.yeast != null) lines.push(`Yeast: ${formatGrams(r.finalMix.yeast)}`);
+  if (r.finalMix.yeast != null) lines.push(`Yeast: ${formatYeast(r.finalMix.yeast)}`);
   if (r.finalMix.oil != null) lines.push(`Oil:   ${formatGrams(r.finalMix.oil)}`);
   if (r.finalMix.sugar != null) lines.push(`Sugar: ${formatGrams(r.finalMix.sugar)}`);
 
@@ -338,7 +346,7 @@ export function buildNerdShareText(r: NerdDoughResult): string {
   lines.push(`Flour: ${formatGrams(r.flour)}`);
   lines.push(`Water: ${formatGrams(r.water)}`);
   lines.push(`Salt:  ${formatGrams(r.salt)}`);
-  if (r.finalMix.yeast != null) lines.push(`Yeast: ${formatGrams(r.yeast)}`);
+  if (r.finalMix.yeast != null) lines.push(`Yeast: ${formatYeast(r.yeast)}`);
   if (r.oil != null) lines.push(`Oil:   ${formatGrams(r.oil)}`);
   if (r.sugar != null) lines.push(`Sugar: ${formatGrams(r.sugar)}`);
   lines.push(`Total: ${formatGrams(r.totalWeight)}`);
@@ -361,7 +369,7 @@ export function buildShareText(r: DoughResult): string {
     `Flour: ${formatGrams(r.flour)}`,
     `Water: ${formatGrams(r.water)}`,
     `Salt:  ${formatGrams(r.salt)}`,
-    `Yeast: ${formatGrams(r.yeast)}`,
+    `Yeast: ${formatYeast(r.yeast)}`,
   ];
   if (r.oil != null) lines.push(`Oil:   ${formatGrams(r.oil)}`);
   if (r.sugar != null) lines.push(`Sugar: ${formatGrams(r.sugar)}`);

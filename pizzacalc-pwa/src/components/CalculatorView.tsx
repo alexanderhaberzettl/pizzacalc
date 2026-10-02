@@ -3,6 +3,7 @@ import { useSettings, yeastPctFor } from '../context/SettingsContext';
 import {
   calculateDough,
   formatGrams,
+  FRESH_YEAST_FACTOR,
   fermentationHint,
   buildShareText,
   PRESETS,
@@ -221,6 +222,7 @@ export default function CalculatorView() {
             <Row label="Water" value={formatGrams(result.water)} />
             <Row label="Salt" value={formatGrams(result.salt)} />
             <Row label="Yeast (instant dry)" value={formatGrams(result.yeast)} />
+            <Row label="Yeast (fresh)" value={formatGrams(result.yeast * FRESH_YEAST_FACTOR)} />
             {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil)} />}
             {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar)} />}
             <Row label="Total" value={formatGrams(result.totalWeight)} bold />
@@ -235,6 +237,7 @@ export default function CalculatorView() {
             <Row label="Water" value={formatGrams(result.water / result.numBalls)} />
             <Row label="Salt" value={formatGrams(result.salt / result.numBalls)} />
             <Row label="Yeast (instant dry)" value={formatGrams(result.yeast / result.numBalls)} />
+            <Row label="Yeast (fresh)" value={formatGrams((result.yeast / result.numBalls) * FRESH_YEAST_FACTOR)} />
             {result.oil != null && <Row label="Olive Oil" value={formatGrams(result.oil / result.numBalls)} />}
             {result.sugar != null && <Row label="Sugar" value={formatGrams(result.sugar / result.numBalls)} />}
           </Collapsible>
