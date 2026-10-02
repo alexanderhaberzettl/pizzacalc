@@ -15,14 +15,17 @@ export interface Settings {
 
 export const defaultSettings: Settings = {
   ballWeight: 335,
-  saltRatio: 2.0,
+  saltRatio: 2.5,
   includeOliveOil: false,
   oliveOilRatio: 2.0,
   includeSugar: false,
   sugarRatio: 1.5,
+  // Overnight = ~12h at a cool 18–20°C room temperature (no fridge).
   yeastOvernight: 0.08,
-  yeast48h: 0.03,
-  yeast9h: 0.30,
+  // 48 hours = mostly in the fridge, where yeast is much slower.
+  yeast48h: 0.15,
+  // 9 hours at 20–22°C; 0.3% tended to over-proof in a warm kitchen.
+  yeast9h: 0.20,
   // Bumped from 0.7% so a 3h same-day dough actually proofs in 3 hours.
   yeast3h: 1.20,
 };
@@ -35,14 +38,28 @@ interface SettingsContextType {
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'pizzacalc.settings.v3';
+const STORAGE_KEY = 'pizzacalc.settings.v4';
+const LEGACY_STORAGE_KEY = 'pizzacalc.settings.v3';
+
+/** Defaults that changed in v4. Stored values still equal to the old default
+ * were never customized, so they move to the new default. */
+const V3_DEFAULTS: Partial<Settings> = { saltRatio: 2.0, yeast48h: 0.03, yeast9h: 0.30 };
+
+function migrateV3(parsed: Partial<Settings>): Partial<Settings> {
+  const migrated = { ...parsed };
+  (Object.keys(V3_DEFAULTS) as (keyof Settings)[]).forEach(key => {
+    if (migrated[key] === V3_DEFAULTS[key]) delete migrated[key];
+  });
+  return migrated;
+}
 
 function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultSettings;
-    const parsed = JSON.parse(raw);
-    return { ...defaultSettings, ...parsed };
+    if (raw) return { ...defaultSettings, ...JSON.parse(raw) };
+    const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (legacy) return { ...defaultSettings, ...migrateV3(JSON.parse(legacy)) };
+    return defaultSettings;
   } catch {
     return defaultSettings;
   }

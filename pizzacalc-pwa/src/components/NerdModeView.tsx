@@ -3,8 +3,11 @@ import {
   calculateNerdDough,
   formatGrams,
   FRESH_YEAST_FACTOR,
-  fermentationHint,
   buildNerdShareText,
+  yeastPctForConditions,
+  equivalentHoursAt20,
+  waterTempFor,
+  MixingMethod,
   getSourdoughEstimates,
   PreFermentType,
   NerdDoughResult,
@@ -12,10 +15,8 @@ import {
 
 // ─── Local helper types ───────────────────────────────────────────────────────
 
-type YeastLabel = '48 hours' | 'Overnight' | '9 hours' | '3 hours';
 type LeaveningType = 'yeast' | 'sourdough';
 
-const YEAST_OPTIONS: YeastLabel[] = ['48 hours', 'Overnight', '9 hours', '3 hours'];
 const HYDRATIONS = [0.60, 0.65, 0.70, 0.75];
 const PRE_FERMENT_OPTIONS: PreFermentType[] = ['none', 'poolish', 'biga', 'tiga'];
 
@@ -23,27 +24,27 @@ const PRE_FERMENT_OPTIONS: PreFermentType[] = ['none', 'poolish', 'biga', 'tiga'
 
 const DEFAULT_SETTINGS = {
   ballWeight: 280,
-  saltRatio: 2.0,
+  saltRatio: 2.5,
   includeOliveOil: false,
   oliveOilRatio: 2.0,
   includeSugar: false,
   sugarRatio: 1.5,
-  yeastOvernight: 0.08,
-  yeast48h: 0.03,
-  yeast9h: 0.30,
-  yeast3h: 1.20,
 };
 
-function yeastPctFor(
-  settings: typeof DEFAULT_SETTINGS,
-  label: YeastLabel
-): number {
-  switch (label) {
-    case 'Overnight': return settings.yeastOvernight;
-    case '48 hours': return settings.yeast48h;
-    case '9 hours': return settings.yeast9h;
-    case '3 hours': return settings.yeast3h;
-  }
+const DEFAULT_TEMPS = {
+  roomHours: 14,       // bulk + ball rest at room temp
+  roomTempC: 19,
+  fridgeHours: 0,
+  fridgeTempC: 5,
+  yeastFactor: 1.0,    // personal correction for your yeast / kitchen
+  targetDoughC: 23,
+  kitchenTempC: 21,
+  flourTempC: 21,
+  mixing: 'hand' as MixingMethod,
+};
+
+function formatHours(h: number): string {
+  return Number.isInteger(h) ? `${h}h` : `${h.toFixed(1)}h`;
 }
 
 // ─── Sub-components (local copies, not imported from CalculatorView) ──────────
@@ -100,12 +101,17 @@ export default function NerdModeView() {
   const [settings, setSettings] = useState({ ...DEFAULT_SETTINGS });
   const updateSettings = (partial: Partial<typeof DEFAULT_SETTINGS>) =>
     setSettings(prev => ({ ...prev, ...partial }));
-  const resetSettings = () => setSettings({ ...DEFAULT_SETTINGS });
+  const [temps, setTemps] = useState({ ...DEFAULT_TEMPS });
+  const updateTemps = (partial: Partial<typeof DEFAULT_TEMPS>) =>
+    setTemps(prev => ({ ...prev, ...partial }));
+  const resetSettings = () => {
+    setSettings({ ...DEFAULT_SETTINGS });
+    setTemps({ ...DEFAULT_TEMPS });
+  };
 
   // Per-calculation state
   const [amountOfPizzas, setAmountOfPizzas] = useState(2);
   const [hydration, setHydration] = useState(0.65);
-  const [yeastLabel, setYeastLabel] = useState<YeastLabel>('Overnight');
   const [leaveningType, setLeaveningType] = useState<LeaveningType>('yeast');
   const [preFermentType, setPreFermentType] = useState<PreFermentType>('none');
   const [preFermentFlourPct, setPreFermentFlourPct] = useState(20);
@@ -120,16 +126,42 @@ export default function NerdModeView() {
 
   const isSourdough = leaveningType === 'sourdough';
 
+  const conditions = {
+    roomHours: temps.roomHours,
+    roomTempC: temps.roomTempC,
+    fridgeHours: temps.fridgeHours,
+    fridgeTempC: temps.fridgeTempC,
+  };
+  const modelYeastPct = yeastPctForConditions(conditions) * temps.yeastFactor;
+  const equivHours = equivalentHoursAt20(conditions);
+  const fermentationSummary =
+    `${formatHours(temps.roomHours)} at ${temps.roomTempC}°C` +
+    (temps.fridgeHours > 0 ? ` + ${formatHours(temps.fridgeHours)} in fridge at ${temps.fridgeTempC}°C` : '');
+
+  const waterTempC = waterTempFor({
+    targetDoughC: temps.targetDoughC,
+    roomC: temps.kitchenTempC,
+    flourC: temps.flourTempC,
+    mixing: temps.mixing,
+    preFermentC: preFermentType !== 'none' ? temps.kitchenTempC : null,
+  });
+  const waterTempHint =
+    waterTempC < 2 ? 'Below what water can do — chill the flour, use a colder room, or lower the target.'
+    : waterTempC < 8 ? 'Use ice water.'
+    : waterTempC > 40 ? 'Too hot for yeast — lower the target dough temperature or warm the room instead.'
+    : null;
+  const waterTempLabel = `${Math.round(Math.min(40, Math.max(2, waterTempC)))}°C`;
+
   const calculate = () => {
     setResult(calculateNerdDough({
       ballWeight: settings.ballWeight,
       numBalls: amountOfPizzas,
       hydration,
       saltPct: settings.saltRatio,
-      yeastPct: isSourdough ? 0 : yeastPctFor(settings, yeastLabel),
+      yeastPct: isSourdough ? 0 : modelYeastPct,
       oilPct: settings.includeOliveOil ? settings.oliveOilRatio : null,
       sugarPct: settings.includeSugar ? settings.sugarRatio : null,
-      yeastLabel: isSourdough ? 'Overnight' : yeastLabel,
+      yeastLabel: isSourdough ? 'Sourdough' : fermentationSummary,
       preFermentType,
       preFermentFlourPct,
       isSourdough,
@@ -140,7 +172,10 @@ export default function NerdModeView() {
 
   const share = async () => {
     if (!result) return;
-    const text = buildNerdShareText(result);
+    const text = buildNerdShareText(result, [
+      ...(isSourdough ? [] : [`Fermentation: ${result.yeastLabel}`]),
+      `Water temperature: ${waterTempLabel} (target dough ${temps.targetDoughC}°C)`,
+    ]);
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Pizzacalc Nerd Mode Recipe', text });
@@ -236,17 +271,28 @@ export default function NerdModeView() {
       {/* Fermentation */}
       {!isSourdough ? (
         <section className="card">
-          <label className="card-label">Fermentation</label>
-          <div className="segmented">
-            {YEAST_OPTIONS.map(t => (
-              <button
-                key={t}
-                className={yeastLabel === t ? 'seg active' : 'seg'}
-                onClick={() => setYeastLabel(t)}
-              >{t}</button>
-            ))}
+          <label className="card-label">Fermentation &amp; Temperature</label>
+          <SliderRow label="Time at room temp" value={temps.roomHours} min={1} max={48} step={0.5} suffix="h" decimals={1}
+            onChange={v => updateTemps({ roomHours: v })} />
+          <SliderRow label="Room temperature" value={temps.roomTempC} min={16} max={30} step={0.5} suffix="°C" decimals={1}
+            onChange={v => updateTemps({ roomTempC: v })} />
+          <SliderRow label="Time in fridge" value={temps.fridgeHours} min={0} max={96} step={2} suffix="h"
+            onChange={v => updateTemps({ fridgeHours: v })} />
+          {temps.fridgeHours > 0 && (
+            <SliderRow label="Fridge temperature" value={temps.fridgeTempC} min={2} max={8} step={0.5} suffix="°C" decimals={1}
+              onChange={v => updateTemps({ fridgeTempC: v })} />
+          )}
+          <SliderRow label="Yeast adjustment" value={temps.yeastFactor} min={0.5} max={2} step={0.05} suffix="×" decimals={2}
+            onChange={v => updateTemps({ yeastFactor: v })} />
+          <div className="row row-bold" style={{ marginTop: 8 }}>
+            <span>Yeast (instant dry)</span>
+            <span>{modelYeastPct.toFixed(3)}% of flour</span>
           </div>
-          <p className="hint">{fermentationHint(yeastLabel)}</p>
+          <p className="hint">
+            Room time includes bulk and ball rest. Equivalent to {equivHours.toFixed(1)}h at 20°C — yeast activity
+            roughly doubles every 8°C and nearly stops in the fridge. Model values are a starting point: if your dough
+            regularly over- or under-proofs, change the yeast adjustment.
+          </p>
         </section>
       ) : (
         <section className="card">
@@ -268,6 +314,36 @@ export default function NerdModeView() {
           </div>
         </section>
       )}
+
+      {/* Water temperature */}
+      <section className="card">
+        <label className="card-label">Water Temperature</label>
+        <SliderRow label="Target dough temp" value={temps.targetDoughC} min={18} max={28} step={0.5} suffix="°C" decimals={1}
+          onChange={v => updateTemps({ targetDoughC: v })} />
+        <SliderRow label="Kitchen temp" value={temps.kitchenTempC} min={14} max={32} step={0.5} suffix="°C" decimals={1}
+          onChange={v => updateTemps({ kitchenTempC: v })} />
+        <SliderRow label="Flour temp" value={temps.flourTempC} min={4} max={32} step={0.5} suffix="°C" decimals={1}
+          onChange={v => updateTemps({ flourTempC: v })} />
+        <div className="segmented" style={{ marginTop: 8 }}>
+          {(['hand', 'machine'] as MixingMethod[]).map(m => (
+            <button
+              key={m}
+              className={temps.mixing === m ? 'seg active' : 'seg'}
+              onClick={() => updateTemps({ mixing: m })}
+            >{m === 'hand' ? 'By hand' : 'Machine'}</button>
+          ))}
+        </div>
+        <div className="row row-bold" style={{ marginTop: 8 }}>
+          <span>Water</span>
+          <span>{waterTempLabel}</span>
+        </div>
+        {waterTempHint && <p className="hint">{waterTempHint}</p>}
+        <p className="hint">
+          Water = {preFermentType !== 'none' ? 4 : 3} × target − kitchen − flour − kneading heat
+          {preFermentType !== 'none' ? ' − pre-ferment (≈ kitchen temp)' : ''}. Typical target: 22–24°C for long
+          ferments, 25–27°C for same-day dough.
+        </p>
+      </section>
 
       {/* Amount of pizzas */}
       <section className="card">
@@ -353,21 +429,6 @@ export default function NerdModeView() {
           )}
         </div>
 
-        {!isSourdough && (
-          <div className="settings-section">
-            <span className="settings-section-label">Yeast — % of flour, instant dry</span>
-            <SliderRow label="48 hours" value={settings.yeast48h} min={0.01} max={0.10} step={0.005} suffix="%" decimals={3}
-              onChange={v => updateSettings({ yeast48h: v })} />
-            <SliderRow label="Overnight" value={settings.yeastOvernight} min={0.03} max={0.30} step={0.01} suffix="%" decimals={3}
-              onChange={v => updateSettings({ yeastOvernight: v })} />
-            <SliderRow label="9 hours" value={settings.yeast9h} min={0.10} max={0.80} step={0.05} suffix="%" decimals={2}
-              onChange={v => updateSettings({ yeast9h: v })} />
-            <SliderRow label="3 hours" value={settings.yeast3h} min={0.50} max={2.50} step={0.10} suffix="%" decimals={2}
-              onChange={v => updateSettings({ yeast3h: v })} />
-            <p className="hint" style={{ marginTop: 4 }}>For fresh yeast, multiply values by ~3.</p>
-          </div>
-        )}
-
         <button className="calc-btn danger" onClick={resetSettings} style={{ marginTop: 8 }}>
           Reset to Defaults
         </button>
@@ -406,11 +467,14 @@ export default function NerdModeView() {
             <Row label="Flour" value={formatGrams(result.finalMix.flour)} />
             <Row label="Water" value={formatGrams(result.finalMix.water)} />
             <Row label="Salt" value={formatGrams(result.finalMix.salt)} />
-            {result.finalMix.yeast != null && (
+            {result.finalMix.yeast != null && !result.preFermentCoversYeast && (
               <>
                 <Row label="Yeast (instant dry)" value={formatGrams(result.finalMix.yeast)} />
                 <Row label="Yeast (fresh)" value={formatGrams(result.finalMix.yeast * FRESH_YEAST_FACTOR)} />
               </>
+            )}
+            {result.preFermentCoversYeast && (
+              <p className="hint">The pre-ferment already contains at least as much yeast as this fermentation needs, so the final mix gets none. Consider a smaller pre-ferment or a shorter fermentation.</p>
             )}
             {result.finalMix.oil != null && (
               <Row label="Olive Oil" value={formatGrams(result.finalMix.oil)} />
@@ -421,6 +485,14 @@ export default function NerdModeView() {
             {result.finalMix.starter != null && (
               <Row label="Starter" value={formatGrams(result.finalMix.starter)} />
             )}
+          </section>
+
+          {/* Temperatures card */}
+          <section className="card">
+            <h2>Temperatures</h2>
+            <Row label="Water" value={waterTempLabel} />
+            <Row label="Target dough temp" value={`${temps.targetDoughC}°C`} />
+            {!isSourdough && <Row label="Fermentation" value={result.yeastLabel} />}
           </section>
 
           {/* Total batch card */}
